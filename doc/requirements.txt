@@ -1,0 +1,19 @@
+MVP:
+1. Reserve laundry room for a specific time
+2. Start laundry session (when reserved or ad-hoc)
+3. Start washing session (when reserved or ad-hoc)
+4. Get notified when your washing session is done (alarm)
+5. Finish washing cycle 
+
+Enhancement 1
+1. Subscribe to notification when laundry session of another party is done
+2. trigger push service 
+
+Enhancement 2
+1. Send request to current laundry session of another party to get an estimate of end (time or washing cycle)
+
+Enhancement 3
+1. User management
+
+Enhancement 4
+1. Laundry room/machine management
