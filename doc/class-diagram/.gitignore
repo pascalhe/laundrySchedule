@@ -1,0 +1,4 @@
+.vpprefdata/
+tmp/
+.lock
+WashingSchedule.vpp.*
