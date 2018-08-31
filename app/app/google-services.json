@@ -1,0 +1,187 @@
+{
+  "project_info": {
+    "project_number": "854479956221",
+    "firebase_url": "https://laundryschedule.firebaseio.com",
+    "project_id": "laundryschedule",
+    "storage_bucket": "laundryschedule.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854479956221:android:c2b3e600a23198d9",
+        "android_client_info": {
+          "package_name": "ch.zhaw.laundryschedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854479956221-5gldk63j347bcopch98qc2d2li3f95ln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.zhaw.laundryschedule",
+            "certificate_hash": "72df062106d968115ff1e1a4724ea78d38658a39"
+          }
+        },
+        {
+          "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs3Uh4z2BMOW0vKh3l7X8qrchOGYub0kU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854479956221:android:99d1bbfea12922b2",
+        "android_client_info": {
+          "package_name": "com.pascalheil.zhaw.firebasetest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854479956221-qcp96t4t7ctc0a6r6bppvp0f91bq6c9n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pascalheil.zhaw.firebasetest",
+            "certificate_hash": "72df062106d968115ff1e1a4724ea78d38658a39"
+          }
+        },
+        {
+          "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs3Uh4z2BMOW0vKh3l7X8qrchOGYub0kU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854479956221:android:1919d3020ea05e39",
+        "android_client_info": {
+          "package_name": "zhaw.ch.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854479956221-g5c6h66f58lphitq59bpjak1nbiv0sel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "zhaw.ch.demo",
+            "certificate_hash": "86801913f04a835c2a07a878f58cfee2e4575c25"
+          }
+        },
+        {
+          "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs3Uh4z2BMOW0vKh3l7X8qrchOGYub0kU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854479956221:android:44ce84b4ad243799",
+        "android_client_info": {
+          "package_name": "zhaw.ch.laundryschedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854479956221-utm7vbf99ohvf9k723m3b9bib8biidss.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "zhaw.ch.laundryschedule",
+            "certificate_hash": "86801913f04a835c2a07a878f58cfee2e4575c25"
+          }
+        },
+        {
+          "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs3Uh4z2BMOW0vKh3l7X8qrchOGYub0kU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854479956221-ivdko8ssu774to72esrta9g0hvndbclq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
