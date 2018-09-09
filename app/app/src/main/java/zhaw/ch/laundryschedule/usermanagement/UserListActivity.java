@@ -77,9 +77,8 @@ public class UserListActivity extends AppCompatActivity {
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         // Get the selected item text from ListView
                                         User selectedItem = (User) parent.getItemAtPosition(position);
-
                                         Intent userIntent = new Intent(getBaseContext(), UserActivity.class);
-                                        userIntent.putExtra("documentKey", user.getDocumentKey());
+                                        userIntent.putExtra("documentKey", selectedItem.getDocumentKey());
                                         startActivity(userIntent);
                                     }
                                 });

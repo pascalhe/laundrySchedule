@@ -3,6 +3,10 @@ package zhaw.ch.laundryschedule.database;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+/**
+ * Returns a singleton instance from the class Firestore.
+ * The class includs a firestore instance
+ */
 public class Firestore {
 
     private static Firestore instance = null;
@@ -18,6 +22,10 @@ public class Firestore {
         firestore.setFirestoreSettings(settings);
     }
 
+    /**
+     * Returns a singleton instance from the class Firestore
+     * @return
+     */
     public static FirebaseFirestore getInstance(){
         if(instance == null){
             instance = new Firestore();
