@@ -7,13 +7,14 @@ public class User extends AbstractBaseModel{
     private String userName;
     private String password;
     private Location location;
+    private String documentKey;
 
     public User(){
         super();
         location = new Location();
     }
 
-    public User(String id, String firstName, String lastName, String email, String userName, String password, Location location){
+    public User(String id, String firstName, String lastName, String email, String userName, String password, Location location, String documentKey){
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,9 +22,10 @@ public class User extends AbstractBaseModel{
         this.userName = userName;
         this.password = password;
         this.location = location;
+        this.documentKey = documentKey;
     }
 
-    public User(String firstName, String lastName, String email, String userName, String password, Location location){
+    public User(String firstName, String lastName, String email, String userName, String password, Location location, String documentKey){
         super();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,6 +33,7 @@ public class User extends AbstractBaseModel{
         this.userName = userName;
         this.password = password;
         this.location = location;
+        this.documentKey = documentKey;
     }
 
     public String getFirstName(){
@@ -79,5 +82,13 @@ public class User extends AbstractBaseModel{
 
     public void setLocation(Location _location) {
         location = _location;
+    }
+
+    public String getDocumentKey(){
+        return documentKey;
+    }
+
+    public void setDocumentKey(String documentKey) {
+        this.documentKey = documentKey;
     }
 }

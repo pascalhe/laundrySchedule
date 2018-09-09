@@ -1,6 +1,7 @@
 package zhaw.ch.laundryschedule.usermanagement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 
@@ -26,12 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zhaw.ch.laundryschedule.R;
+import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.User;
 
 public class UserListActivity extends AppCompatActivity {
 
     private FirebaseFirestore firestore;
     private List<User> userList = new ArrayList<>();
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,59 +44,51 @@ public class UserListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        // Floating Action Button for add User
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent userIntent = new Intent(getBaseContext(), UserActivity.class);
+                startActivity(userIntent);
             }
         });
 
-        // Firestore
-        firestore = FirebaseFirestore.getInstance();
-
-        // Settings for Firestore
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        firestore.setFirestoreSettings(settings);
-
-        // receive all users from firestore and map to objects
-        firestore.collection("users")
+        // Get all users end send it to the listview
+        Firestore.getInstance().collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
-                                User user = document.toObject(User.class);
+                                final User user = document.toObject(User.class);
+                                user.setDocumentKey(document.getId());
                                 userList.add(user);
-                            }
+                                Context ctx = getApplicationContext();
+                                ListView listView = (ListView)findViewById(R.id.user_list);
 
-                            //and set the adapter for thiss list view
-                            Context ctx = getApplicationContext();
-                            ListView listView = (ListView)findViewById(R.id.user_list);
-                            UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);
-                            listView.setAdapter(adapter);
+                                UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);
+                                listView.setAdapter(adapter);
+
+                                // Set an item click listener for ListView
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        // Get the selected item text from ListView
+                                        User selectedItem = (User) parent.getItemAtPosition(position);
+
+                                        Intent userIntent = new Intent(getBaseContext(), UserActivity.class);
+                                        userIntent.putExtra("documentKey", user.getDocumentKey());
+                                        startActivity(userIntent);
+                                    }
+                                });
+                            }
                         } else {
                             Log.w("Error", "Error getting documents.", task.getException());
                         }
                     }
                 });
-/*
-        // Listview
-        userList.add(new User("Jon", "Quadroni", "jon.quadroni@klzh.ch", "quadroni", "geheim", null));
-        userList.add(new User("Simone", "Schwyter", "simone.schwyter@hotmail.ch", "simsi", "geheim", null));
-        userList.add(new User("Sara", "Quadroni", "sara@sw-photoart.ch", "sara", "geheim", null));
-        userList.add(new User("Phillipe", "Correia", "correia@tcp.ch", "quadroni", "geheim", null));
-
-        //and set the adapter for thiss list view
-        Context ctx = getApplicationContext();
-        ListView listView = (ListView)findViewById(R.id.user_list);
-        UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);
-        listView.setAdapter(adapter);
-        */
     }
 
     @Override
