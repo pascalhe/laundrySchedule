@@ -32,6 +32,10 @@
                 android:id="@+id/nav_washing_machines"
                 android:icon="@drawable/ic_menu_washing_machine"
                 android:title="Washing machines" />
+            <item
+                android:id="@+id/nav_locations"
+                android:icon="@drawable/ic_menu_location"
+                android:title="Locations" />
         </menu>
     </item>
 
