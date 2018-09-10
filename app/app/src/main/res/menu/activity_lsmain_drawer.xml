@@ -27,7 +27,7 @@
             <item
                 android:id="@+id/nav_usermanagement"
                 android:icon="@drawable/ic_menu_account"
-                android:title="User" />
+                android:title="Users" />
             <item
                 android:id="@+id/nav_washing_machines"
                 android:icon="@drawable/ic_menu_washing_machine"
