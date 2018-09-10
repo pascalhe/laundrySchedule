@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.UUID;
 
+import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.Location;
@@ -87,8 +88,9 @@ public class UserActivity extends AppCompatActivity {
             documentKey = UUID.randomUUID().toString().replace("-", "");
 
         Firestore.getInstance().collection("users").document(documentKey).set(user);
-        Intent userlistIntent = new Intent(getBaseContext(), UserListActivity.class);
-        startActivity(userlistIntent);
+        Intent lSMainActivityIntent = new Intent(getBaseContext(), LSMainActivity.class);
+        lSMainActivityIntent.putExtra("menuId", R.id.nav_usermanagement);
+        startActivity(lSMainActivityIntent);
     }
 
     /**
