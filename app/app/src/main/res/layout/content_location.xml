@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".locations.LocationActivity"
+    tools:showIn="@layout/activity_location">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="fill_parent">
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/street"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Street"
+            android:inputType="text"/>
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/streetNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Streetnumber"
+            android:inputType="number" />
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="City"
+            android:inputType="text" />
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/zipCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Zip Code"/>
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Country"/>
+
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/saveLocation"
+            android:text="Add Location"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

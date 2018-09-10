@@ -10,6 +10,7 @@ public class Location extends AbstractBaseModel {
     private int zipCode;
     private String city;
     private String country;
+    private String documentKey;
     private List<User> users;
 
     public Location(){
@@ -17,24 +18,22 @@ public class Location extends AbstractBaseModel {
         users = new ArrayList<>();
     }
 
-    public Location(String _id, String _street, String _streetNumber, int _zipCode, String _city, String _country, List<User> _users) {
+    public Location(String _id, String _street, String _streetNumber, int _zipCode, String _city, String _country) {
         super(_id);
         street = _street;
         streetNumber = _streetNumber;
         zipCode = _zipCode;
         city = _city;
         country = _country;
-        users = _users;
     }
 
-    public Location(String _street, String _streetNumber, int _zipCode, String _city, String _country, List<User> _users) {
+    public Location(String _street, String _streetNumber, int _zipCode, String _city, String _country) {
         super();
         street = _street;
         streetNumber = _streetNumber;
         zipCode = _zipCode;
         city = _city;
         country = _country;
-        users = _users;
     }
 
     public void setStreet(String _street) {
@@ -75,5 +74,13 @@ public class Location extends AbstractBaseModel {
 
     public String getCountry() {
         return country;
+    }
+
+    public String getDocumentKey(){
+        return documentKey;
+    }
+
+    public void setDocumentKey(String documentKey) {
+        this.documentKey = documentKey;
     }
 }

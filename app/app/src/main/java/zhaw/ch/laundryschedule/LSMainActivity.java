@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import zhaw.ch.laundryschedule.locations.LocationListFragment;
 import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
 public class LSMainActivity extends AppCompatActivity
@@ -121,6 +122,10 @@ public class LSMainActivity extends AppCompatActivity
                 break;
             case R.id.nav_washing_machines:
 
+                break;
+            case R.id.nav_locations:
+                LocationListFragment locationListFragment = LocationListFragment.newInstance();
+                fragmentTransaction.add(R.id.fragment_container, locationListFragment,"MyTag");
                 break;
         }
         fragmentTransaction.commit();

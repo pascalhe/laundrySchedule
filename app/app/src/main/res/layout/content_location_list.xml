@@ -12,14 +12,14 @@
 
         <Button
             android:layout_margin="10dp"
-            android:id="@+id/addUserButton"
-            android:text="Add User"
+            android:id="@+id/addLocationButton"
+            android:text="Add Location"
             android:layout_width="match_parent"
             android:layout_height="60dp" />
 
-        <!--ListView for Users-->
+        <!--ListView for locations -->
         <ListView
-            android:id="@+id/user_list"
+            android:id="@+id/location_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -29,6 +29,5 @@
         </ListView>
 
     </LinearLayout>
-
 
 </android.support.constraint.ConstraintLayout>

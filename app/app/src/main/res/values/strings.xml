@@ -10,4 +10,5 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_user">Usermanagement</string>
     <string name="title_activity_lsmain">LSMainActivity</string>
+    <string name="title_activity_location">LocationActivity</string>
 </resources>

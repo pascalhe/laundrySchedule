@@ -22,7 +22,6 @@ public class User extends AbstractBaseModel{
         this.userName = userName;
         this.password = password;
         this.location = location;
-        this.documentKey = documentKey;
     }
 
     public User(String firstName, String lastName, String email, String userName, String password, Location location, String documentKey){
@@ -33,7 +32,6 @@ public class User extends AbstractBaseModel{
         this.userName = userName;
         this.password = password;
         this.location = location;
-        this.documentKey = documentKey;
     }
 
     public String getFirstName(){

@@ -1,4 +1,4 @@
-package zhaw.ch.laundryschedule.usermanagement;
+package zhaw.ch.laundryschedule.locations;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,52 +21,55 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
-import zhaw.ch.laundryschedule.models.User;
+import zhaw.ch.laundryschedule.models.Location;
+import zhaw.ch.laundryschedule.usermanagement.UserActivity;
+import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
-public class UserListFragment extends Fragment {
+public class LocationListFragment extends Fragment{
 
-    private List<User> userList = new ArrayList<>();
-    private Button addUserButton;
+    private List<Location> locationList = new ArrayList<>();
+    private Button addLocationButton;
 
-    public static UserListFragment newInstance(){
-        UserListFragment fragment = new UserListFragment();
+    public static LocationListFragment newInstance(){
+        LocationListFragment fragment = new LocationListFragment();
         Bundle args = new Bundle();
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInst) {
-
         // set the fragment layout.
-        View rootV = inflater.inflate(R.layout.content_user_list, container, false);
+        View rootV = inflater.inflate(R.layout.content_location_list, container, false);
 
-        // Add user button
-        addUserButton = (Button)rootV.findViewById(R.id.addUserButton);
-        addUserButton.setOnClickListener(new View.OnClickListener() {
+        // Add location button
+        addLocationButton = (Button)rootV.findViewById(R.id.addLocationButton);
+        addLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), UserActivity.class);
+                Intent intent = new Intent(getActivity().getBaseContext(), LocationActivity.class);
                 startActivity(intent);
             }
         });
 
         // Get all users end send it to the listview
-        Firestore.getInstance().collection("users")
+        Firestore.getInstance().collection("locations")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
-                                final User user = document.toObject(User.class);
-                                user.setDocumentKey(document.getId());
-                                userList.add(user);
-                                Context ctx = getActivity().getApplicationContext();;
-                                ListView listView = (ListView)getView().findViewById(R.id.user_list);
+                                final Location location = document.toObject(Location.class);
+                                location.setDocumentKey(document.getId());
+                                locationList.add(location);
+                                Context ctx = getActivity().getApplicationContext();
 
-                                UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);
+                                ListView listView = (ListView) getView().findViewById(R.id.location_list);
+
+                                LocationListViewAdapter adapter = new LocationListViewAdapter(locationList, ctx);
                                 listView.setAdapter(adapter);
 
                                 // Set an item click listener for ListView
@@ -74,10 +77,10 @@ public class UserListFragment extends Fragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         // Get the selected item text from ListView
-                                        User selectedItem = (User) parent.getItemAtPosition(position);
-                                        Intent userIntent = new Intent(getActivity().getBaseContext(), UserActivity.class);
-                                        userIntent.putExtra("documentKey", selectedItem.getDocumentKey());
-                                        startActivity(userIntent);
+                                        Location selectedItem = (Location) parent.getItemAtPosition(position);
+                                        Intent locationIntent = new Intent(getActivity().getBaseContext(), LSMainActivity.class);
+                                        locationIntent.putExtra("documentKey", selectedItem.getDocumentKey());
+                                        startActivity(locationIntent);
                                     }
                                 });
                             }
