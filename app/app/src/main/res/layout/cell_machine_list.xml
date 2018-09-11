@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--app:layout_constraintHorizontal_bias="0.5"-->
+
+    <TextView
+        android:id="@+id/machineName"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Name"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/machineCapacity"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/machineCapacity"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Capacity"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toRightOf="@+id/machineName"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".machines.MachineActivity"
+    tools:showIn="@layout/activity_machine">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="fill_parent">
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/machineNameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:inputType="textCapWords"/>
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/machineCapacityEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Capacity"
+            android:inputType="numberDecimal" />
+
+
+
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/saveMachine"
+            android:text="Add Machine"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -6,7 +6,7 @@ public class ClothesDryer extends AbstractMachine {
         super();
     }
 
-    public ClothesDryer(String _id, String _name, double _capacity){
+    public ClothesDryer(String _id, String _name, String _capacity){
         super(_id, _name, _capacity);
     }
 }

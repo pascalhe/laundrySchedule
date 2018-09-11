@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
+import zhaw.ch.laundryschedule.machines.MachineListFragment;
+import zhaw.ch.laundryschedule.machines.MachineListViewAdapter;
 import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
 public class LSMainActivity extends AppCompatActivity
@@ -52,8 +54,9 @@ public class LSMainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Check intent
-        Intent intetnt = getIntent();
-        setFragment(intetnt.getIntExtra("menuId", R.id.nav_camera));
+        Intent intent = getIntent();
+        setFragment(intent.getIntExtra("menuId", R.id.nav_camera));
+
     }
 
     @Override
@@ -118,14 +121,15 @@ public class LSMainActivity extends AppCompatActivity
                 break;
             case R.id.nav_usermanagement:
                 UserListFragment userListFragment = UserListFragment.newInstance();
-                fragmentTransaction.add(R.id.fragment_container, userListFragment,"MyTag");
+                fragmentTransaction.add(R.id.fragment_container, userListFragment,"user");
                 break;
             case R.id.nav_washing_machines:
-
+                MachineListFragment machineListFragment = MachineListFragment.newInstance();
+                fragmentTransaction.add(R.id.fragment_container, machineListFragment,"machine");
                 break;
             case R.id.nav_locations:
                 LocationListFragment locationListFragment = LocationListFragment.newInstance();
-                fragmentTransaction.add(R.id.fragment_container, locationListFragment,"MyTag");
+                fragmentTransaction.add(R.id.fragment_container, locationListFragment,"location");
                 break;
         }
         fragmentTransaction.commit();

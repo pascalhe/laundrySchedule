@@ -10,7 +10,6 @@ public class Location extends AbstractBaseModel {
     private int zipCode;
     private String city;
     private String country;
-    private String documentKey;
     private List<User> users;
 
     public Location(){
@@ -76,11 +75,4 @@ public class Location extends AbstractBaseModel {
         return country;
     }
 
-    public String getDocumentKey(){
-        return documentKey;
-    }
-
-    public void setDocumentKey(String documentKey) {
-        this.documentKey = documentKey;
-    }
 }

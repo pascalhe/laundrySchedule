@@ -2,6 +2,7 @@ package zhaw.ch.laundryschedule.models;
 
 public abstract class AbstractBaseModel {
     private String id;
+    private String documentKey;
 
     public AbstractBaseModel(){
         id = new String();
@@ -16,5 +17,13 @@ public abstract class AbstractBaseModel {
 
     public void setId(String _id){
         id = _id;
+    }
+
+    public String getDocumentKey() {
+        return documentKey;
+    }
+
+    public void setDocumentKey(String documentKey) {
+        this.documentKey = documentKey;
     }
 }

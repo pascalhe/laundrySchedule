@@ -1,4 +1,4 @@
-package zhaw.ch.laundryschedule.locations;
+package zhaw.ch.laundryschedule.machines;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,28 +14,28 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.models.AbstractBaseModel;
+import zhaw.ch.laundryschedule.models.AbstractMachine;
 import zhaw.ch.laundryschedule.models.Location;
+import zhaw.ch.laundryschedule.models.WashingMachine;
 
-public class LocationActivity extends AppCompatActivity {
+public class MachineActivity extends AppCompatActivity {
 
-    private Button saveLocationButton;
+    private Button saveMachineButton;
     private String documentKey;
-    private EditText street;
-    private EditText streetNumber;
-    private EditText zipCode;
-    private EditText city;
-    private EditText country;
+    private EditText name;
+    private EditText capacity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        setContentView(R.layout.activity_machine);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,69 +49,61 @@ public class LocationActivity extends AppCompatActivity {
         });
 
         // get EditTexts
-        street = (EditText)findViewById(R.id.street);
-        streetNumber = (EditText)findViewById(R.id.streetNumber);
-        zipCode = (EditText)findViewById(R.id.zipCode);
-        city = (EditText)findViewById(R.id.city);
-        country = (EditText)findViewById(R.id.country);
+        name = (EditText) findViewById(R.id.machineNameEdit);
+        capacity = (EditText) findViewById(R.id.machineCapacityEdit);
 
         // Save or add location
-        saveLocationButton = (Button) findViewById(R.id.saveLocation);
-        saveLocationButton.setOnClickListener(new View.OnClickListener() {
+        saveMachineButton = (Button) findViewById(R.id.saveMachine);
+        saveMachineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveLocation();
+                saveMachine();
             }
         });
 
         // Check intent
-        Intent locationIntent = getIntent();
-        if(locationIntent.hasExtra("documentKey")){
+        Intent machineIntent = getIntent();
+        if (machineIntent.hasExtra("documentKey")) {
             // Override button text from add to update
-            saveLocationButton.setText("Update Location");
+            saveMachineButton.setText("Update Machine");
 
-            documentKey = locationIntent.getStringExtra("documentKey");
+            documentKey = machineIntent.getStringExtra("documentKey");
             DocumentReference docRef = Firestore.getInstance().collection("locations").document(documentKey);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Location location = documentSnapshot.toObject(Location.class);
-                    if(location != null)
-                        setLocationInForm(location);
+                    AbstractMachine machine = documentSnapshot.toObject(AbstractMachine.class);
+
                 }
             });
         }
     }
 
-    private void saveLocation(){
-        Location location = getLocationFromForm();
+    private void saveMachine() {
+        AbstractMachine machine = getMachineFromForm();
 
         // If documentKey empty, generate a new key
-        if(documentKey == null || documentKey.isEmpty())
+        if (documentKey == null || documentKey.isEmpty())
             documentKey = UUID.randomUUID().toString().replace("-", "");
 
-        Firestore.getInstance().collection("locations").document(documentKey).set(location);
+        Firestore.getInstance().collection("machines").document(documentKey).set(machine);
         Intent lSMainActivityIntent = new Intent(getBaseContext(), LSMainActivity.class);
-        lSMainActivityIntent.putExtra("menuId", R.id.nav_locations);
+        lSMainActivityIntent.putExtra("menuId", R.id.nav_washing_machines);
         startActivity(lSMainActivityIntent);
     }
 
-    private void setLocationInForm(Location location){
-        street.setText(location.getStreet());
-        streetNumber.setText(location.getStreetNumber());
-        zipCode.setText(location.getZipCode());
-        city.setText(location.getCity());
-        country.setText(location.getCountry());
+    private void setMachineInForm(AbstractMachine machine) {
+        name.setText(machine.getName());
+        capacity.setText(machine.getCapacity());
     }
 
-    private Location getLocationFromForm(){
-        return new Location(
-                street.getText().toString(),
-                streetNumber.getText().toString(),
-                Integer.parseInt(zipCode.getText().toString()),
-                city.getText().toString(),
-                country.getText().toString()
+    private WashingMachine getMachineFromForm() {
+        return new WashingMachine(
+                name.getText().toString(),
+                capacity.getText().toString()
         );
     }
 
+
 }
+

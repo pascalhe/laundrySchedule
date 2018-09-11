@@ -43,11 +43,11 @@ public class UserActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // get EditTexts
-        firstNameEditText = (EditText)findViewById(R.id.firstName);
-        lastNameEditText = (EditText)findViewById(R.id.lastName);
-        emailEditText = (EditText)findViewById(R.id.email);
-        userNameEditText = (EditText)findViewById(R.id.userName);
-        passwordEditText = (EditText)findViewById(R.id.password);
+        firstNameEditText = (EditText) findViewById(R.id.firstName);
+        lastNameEditText = (EditText) findViewById(R.id.lastName);
+        emailEditText = (EditText) findViewById(R.id.email);
+        userNameEditText = (EditText) findViewById(R.id.userName);
+        passwordEditText = (EditText) findViewById(R.id.password);
 
         // Save or add user
         saveUserButton = (Button) findViewById(R.id.saveUser);
@@ -60,7 +60,7 @@ public class UserActivity extends AppCompatActivity {
 
         // Check intent
         Intent userIntent = getIntent();
-        if(userIntent.hasExtra("documentKey")){
+        if (userIntent.hasExtra("documentKey")) {
             // Override button text from add to update
             saveUserButton.setText("Update User");
 
@@ -70,7 +70,7 @@ public class UserActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
-                    if(user != null)
+                    if (user != null)
                         setUserInForm(user);
                 }
             });
@@ -80,11 +80,11 @@ public class UserActivity extends AppCompatActivity {
     /**
      * save or update a existing user
      */
-    private void saveUser(){
+    private void saveUser() {
         User user = getUserFromForm();
 
         // If documentKey empty, generate a new key
-        if(documentKey == null || documentKey.isEmpty())
+        if (documentKey == null || documentKey.isEmpty())
             documentKey = UUID.randomUUID().toString().replace("-", "");
 
         Firestore.getInstance().collection("users").document(documentKey).set(user);
@@ -95,9 +95,10 @@ public class UserActivity extends AppCompatActivity {
 
     /**
      * Mapped a user object in the form
+     *
      * @param user
      */
-    private void setUserInForm(User user){
+    private void setUserInForm(User user) {
         firstNameEditText.setText(user.getFirstName());
         lastNameEditText.setText(user.getLastName());
         emailEditText.setText(user.getEmail());
@@ -107,17 +108,17 @@ public class UserActivity extends AppCompatActivity {
 
     /**
      * Returns a mapped user from the form
+     *
      * @return User
      */
-    private User getUserFromForm(){
+    private User getUserFromForm() {
         return new User(
                 firstNameEditText.getText().toString(),
                 lastNameEditText.getText().toString(),
                 emailEditText.getText().toString(),
                 userNameEditText.getText().toString(),
                 passwordEditText.getText().toString(),
-                new Location(),
-                ""
-                );
+                new Location()
+        );
     }
 }
