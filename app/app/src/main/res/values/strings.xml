@@ -8,8 +8,8 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="title_activity_user">Usermanagement</string>
-    <string name="title_activity_lsmain">LSMainActivity</string>
-    <string name="title_activity_location">LocationActivity</string>
-    <string name="title_activity_machine">Machine</string>
+    <string name="title_activity_user">Users</string>
+    <string name="title_activity_lsmain">Laundry Scheduler</string>
+    <string name="title_activity_location">Locations</string>
+    <string name="title_activity_machine">Machines</string>
 </resources>

@@ -26,6 +26,7 @@ import java.util.UUID;
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.locations.LocationSpinner;
 import zhaw.ch.laundryschedule.locations.SpinLocationAdapter;
 import zhaw.ch.laundryschedule.models.Location;
 import zhaw.ch.laundryschedule.models.User;
@@ -80,17 +81,11 @@ public class UserActivity extends AppCompatActivity{
                 User user = documentSnapshot.toObject(User.class);
                 if (user != null){
                     setUserInForm(user); // set user in form
-                    setLocationSpinner((Spinner)findViewById(R.id.locationId), user.getLocationDocId()); // load spinner with data
+                    LocationSpinner.setLocationSpinner((Spinner)findViewById(R.id.locationId), user.getLocationDocId(), UserActivity.this);
                 }
                 }
             });
         }
-    }
-
-    private String getLocationReference(){
-        if(userLocation == null)
-            return locationList.get(0).getDocumentKey();
-        return userLocation.getDocumentKey();
     }
 
     /**
@@ -134,51 +129,7 @@ public class UserActivity extends AppCompatActivity{
                 emailEditText.getText().toString(),
                 userNameEditText.getText().toString(),
                 passwordEditText.getText().toString(),
-                getLocationReference()
+                LocationSpinner.getLocationReference()
         );
-    }
-
-    private void setLocationSpinner(final Spinner spinner, final String locationDocId){
-        // Get all locations for the spinner
-        Firestore.getInstance().collection("locations")
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot document : task.getResult()) {
-                            final Location location = document.toObject(Location.class);
-                            location.setDocumentKey(document.getId());
-                            if(location.getStreet() != null)
-                                locationList.add(location);
-                            if(location.getDocumentKey().equals(locationDocId))
-                                userLocation = location;
-                        }
-                        Location[] locationArr = new Location[locationList.size()];
-                        locationArr = locationList.toArray(locationArr);
-                        // Creating adapter for spinner
-                        spinLocationAdapter = new SpinLocationAdapter(UserActivity.this,
-                                android.R.layout.simple_spinner_item, locationArr);
-                        // attaching data adapter to spinner
-                        spinner.setAdapter(spinLocationAdapter);
-
-                        // set user location
-                        if(locationDocId != null && !locationDocId.isEmpty()){
-                            spinner.setSelection(locationList.indexOf(userLocation));
-                        }
-
-                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                                userLocation = spinLocationAdapter.getItem(position);
-                            }
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapter) {  }
-                        });
-                    }else {
-                        Log.w("Error", "Error getting documents.", task.getException());
-                    }
-                }
-            });
     }
 }
