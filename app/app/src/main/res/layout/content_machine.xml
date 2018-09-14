@@ -27,9 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Capacity"
-            android:inputType="numberDecimal" />
-
-
+            android:inputType="textCapWords" />
 
         <Button
             android:layout_margin="10dp"
@@ -37,11 +35,6 @@
             android:text="Add Machine"
             android:layout_width="match_parent"
             android:layout_height="60dp" />
-
     </LinearLayout>
-
-
-
-
 
 </android.support.constraint.ConstraintLayout>

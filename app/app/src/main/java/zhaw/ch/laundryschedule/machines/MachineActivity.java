@@ -30,7 +30,7 @@ public class MachineActivity extends AppCompatActivity {
     private String documentKey;
     private EditText name;
     private EditText capacity;
-
+    private WashingMachine macine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,6 @@ public class MachineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_machine);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "add location", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         // get EditTexts
         name = (EditText) findViewById(R.id.machineNameEdit);
@@ -68,12 +59,13 @@ public class MachineActivity extends AppCompatActivity {
             saveMachineButton.setText("Update Machine");
 
             documentKey = machineIntent.getStringExtra("documentKey");
-            DocumentReference docRef = Firestore.getInstance().collection("locations").document(documentKey);
+            DocumentReference docRef = Firestore.getInstance().collection("machines").document(documentKey);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    AbstractMachine machine = documentSnapshot.toObject(AbstractMachine.class);
-
+                    WashingMachine machine = documentSnapshot.toObject(WashingMachine.class);
+                    if(machine != null)
+                        setMachineInForm(machine);
                 }
             });
         }
