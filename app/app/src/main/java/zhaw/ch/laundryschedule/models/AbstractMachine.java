@@ -35,4 +35,5 @@ public abstract class AbstractMachine extends AbstractBaseModel {
     public void setCapacity(String capacity) {
         this.capacity = capacity;
     }
+
 }
