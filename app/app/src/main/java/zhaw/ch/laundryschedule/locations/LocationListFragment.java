@@ -79,7 +79,7 @@ public class LocationListFragment extends Fragment{
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     // Get the selected item text from ListView
                                     Location selectedItem = (Location) parent.getItemAtPosition(position);
-                                    Intent locationIntent = new Intent(getActivity().getBaseContext(), LSMainActivity.class);
+                                    Intent locationIntent = new Intent(getActivity().getBaseContext(), LocationActivity.class);
                                     locationIntent.putExtra("documentKey", selectedItem.getDocumentKey());
                                     startActivity(locationIntent);
                                 }
