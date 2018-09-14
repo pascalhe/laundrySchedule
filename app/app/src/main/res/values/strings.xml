@@ -9,11 +9,12 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_user">Usermanagement</string>
-    <string name="title_activity_lsmain">LSMainActivity</string>
+    <string name="title_activity_lsmain">Laundry Schedule</string>
     <string name="title_activity_location">LocationActivity</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_machine">Machines</string>
 
     <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>

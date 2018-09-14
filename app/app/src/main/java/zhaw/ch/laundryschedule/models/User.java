@@ -7,30 +7,31 @@ public class User extends AbstractBaseModel{
     private String userName;
     private String password;
     private Location location;
+    private String locationDocId;
 
     public User(){
         super();
         location = new Location();
     }
 
-    public User(String id, String firstName, String lastName, String email, String userName, String password, Location location){
+    public User(String id, String firstName, String lastName, String email, String userName, String password, String locationDocId){
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.location = location;
+        this.locationDocId = locationDocId;
     }
 
-    public User(String firstName, String lastName, String email, String userName, String password, Location location){
+    public User(String firstName, String lastName, String email, String userName, String password, String locationDocId){
         super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.location = location;
+        this.locationDocId = locationDocId;
     }
 
     public String getFirstName(){
@@ -81,4 +82,11 @@ public class User extends AbstractBaseModel{
         location = _location;
     }
 
+    public String getLocationDocId() {
+        return locationDocId;
+    }
+
+    public void setLocationDocId(String locationDocId) {
+        this.locationDocId = locationDocId;
+    }
 }

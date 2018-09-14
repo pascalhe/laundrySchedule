@@ -39,15 +39,6 @@ public class LocationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "add location", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // get EditTexts
         street = (EditText)findViewById(R.id.street);
         streetNumber = (EditText)findViewById(R.id.streetNumber);
@@ -99,7 +90,7 @@ public class LocationActivity extends AppCompatActivity {
     private void setLocationInForm(Location location){
         street.setText(location.getStreet());
         streetNumber.setText(location.getStreetNumber());
-        zipCode.setText(location.getZipCode());
+        zipCode.setText(Integer.toString(location.getZipCode()));
         city.setText(location.getCity());
         country.setText(location.getCountry());
     }

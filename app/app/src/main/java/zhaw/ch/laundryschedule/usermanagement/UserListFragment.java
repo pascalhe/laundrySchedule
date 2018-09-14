@@ -63,24 +63,25 @@ public class UserListFragment extends Fragment {
                                 final User user = document.toObject(User.class);
                                 user.setDocumentKey(document.getId());
                                 userList.add(user);
-                                Context ctx = getActivity().getApplicationContext();;
-                                ListView listView = (ListView)getView().findViewById(R.id.user_list);
-
-                                UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);
-                                listView.setAdapter(adapter);
-
-                                // Set an item click listener for ListView
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        // Get the selected item text from ListView
-                                        User selectedItem = (User) parent.getItemAtPosition(position);
-                                        Intent userIntent = new Intent(getActivity().getBaseContext(), UserActivity.class);
-                                        userIntent.putExtra("documentKey", selectedItem.getDocumentKey());
-                                        startActivity(userIntent);
-                                    }
-                                });
                             }
+
+                            Context ctx = getActivity().getApplicationContext();;
+                            ListView listView = (ListView)getView().findViewById(R.id.user_list);
+
+                            UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);
+                            listView.setAdapter(adapter);
+
+                            // Set an item click listener for ListView
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    // Get the selected item text from ListView
+                                    User selectedItem = (User) parent.getItemAtPosition(position);
+                                    Intent userIntent = new Intent(getActivity().getBaseContext(), UserActivity.class);
+                                    userIntent.putExtra("documentKey", selectedItem.getDocumentKey());
+                                    startActivity(userIntent);
+                                }
+                            });
                         } else {
                             Log.w("Error", "Error getting documents.", task.getException());
                         }

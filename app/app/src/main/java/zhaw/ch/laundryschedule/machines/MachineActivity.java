@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -19,10 +20,12 @@ import java.util.UUID;
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.locations.LocationSpinner;
 import zhaw.ch.laundryschedule.models.AbstractBaseModel;
 import zhaw.ch.laundryschedule.models.AbstractMachine;
 import zhaw.ch.laundryschedule.models.Location;
 import zhaw.ch.laundryschedule.models.WashingMachine;
+import zhaw.ch.laundryschedule.usermanagement.UserActivity;
 
 public class MachineActivity extends AppCompatActivity {
 
@@ -31,22 +34,12 @@ public class MachineActivity extends AppCompatActivity {
     private EditText name;
     private EditText capacity;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_machine);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "add location", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         // get EditTexts
         name = (EditText) findViewById(R.id.machineNameEdit);
@@ -68,12 +61,15 @@ public class MachineActivity extends AppCompatActivity {
             saveMachineButton.setText("Update Machine");
 
             documentKey = machineIntent.getStringExtra("documentKey");
-            DocumentReference docRef = Firestore.getInstance().collection("locations").document(documentKey);
+            DocumentReference docRef = Firestore.getInstance().collection("machines").document(documentKey);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    AbstractMachine machine = documentSnapshot.toObject(AbstractMachine.class);
-
+                    WashingMachine machine = documentSnapshot.toObject(WashingMachine.class);
+                    if(machine != null){
+                        setMachineInForm(machine);
+                        LocationSpinner.setLocationSpinner((Spinner)findViewById(R.id.locationId), machine.getLocationDocId(), MachineActivity.this);
+                    }
                 }
             });
         }
@@ -100,10 +96,8 @@ public class MachineActivity extends AppCompatActivity {
     private WashingMachine getMachineFromForm() {
         return new WashingMachine(
                 name.getText().toString(),
-                capacity.getText().toString()
+                capacity.getText().toString(),
+                LocationSpinner.getLocationReference()
         );
     }
-
-
 }
-

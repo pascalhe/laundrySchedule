@@ -116,7 +116,7 @@ public class LSMainActivity extends AppCompatActivity
             case R.id.nav_gallery:
 
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_login:
 
                 break;
             case R.id.nav_usermanagement:

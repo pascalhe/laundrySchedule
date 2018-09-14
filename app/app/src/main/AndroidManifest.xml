@@ -35,6 +35,11 @@
         <activity
             android:name=".usermanagement.LoginActivity"
             android:label="@string/title_activity_login" />
+        <activity
+            android:name=".machines.MachineActivity"
+            android:label="@string/title_activity_machine"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

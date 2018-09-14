@@ -65,25 +65,25 @@ public class LocationListFragment extends Fragment{
                                 final Location location = document.toObject(Location.class);
                                 location.setDocumentKey(document.getId());
                                 locationList.add(location);
-                                Context ctx = getActivity().getApplicationContext();
-
-                                ListView listView = (ListView) getView().findViewById(R.id.location_list);
-
-                                LocationListViewAdapter adapter = new LocationListViewAdapter(locationList, ctx);
-                                listView.setAdapter(adapter);
-
-                                // Set an item click listener for ListView
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        // Get the selected item text from ListView
-                                        Location selectedItem = (Location) parent.getItemAtPosition(position);
-                                        Intent locationIntent = new Intent(getActivity().getBaseContext(), LSMainActivity.class);
-                                        locationIntent.putExtra("documentKey", selectedItem.getDocumentKey());
-                                        startActivity(locationIntent);
-                                    }
-                                });
                             }
+                            Context ctx = getActivity().getApplicationContext();
+
+                            ListView listView = (ListView) getView().findViewById(R.id.location_list);
+
+                            LocationListViewAdapter adapter = new LocationListViewAdapter(locationList, ctx);
+                            listView.setAdapter(adapter);
+
+                            // Set an item click listener for ListView
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    // Get the selected item text from ListView
+                                    Location selectedItem = (Location) parent.getItemAtPosition(position);
+                                    Intent locationIntent = new Intent(getActivity().getBaseContext(), LocationActivity.class);
+                                    locationIntent.putExtra("documentKey", selectedItem.getDocumentKey());
+                                    startActivity(locationIntent);
+                                }
+                            });
                         } else {
                             Log.w("Error", "Error getting documents.", task.getException());
                         }

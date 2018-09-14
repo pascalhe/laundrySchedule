@@ -64,27 +64,28 @@ public class MachineListFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
                                 final WashingMachine machine = document.toObject(WashingMachine.class);
-                                machine.setId(document.getId());
+                                machine.setDocumentKey(document.getId());
                                 machineList.add(machine);
-                                Context ctx = getActivity().getApplicationContext();
-                                ;
-                                ListView listView = (ListView) getView().findViewById(R.id.machineList);
-
-                                MachineListViewAdapter adapter = new MachineListViewAdapter(machineList, ctx);
-                                listView.setAdapter(adapter);
-
-                                // Set an item click listener for ListView
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        // Get the selected item text from ListView
-                                        AbstractMachine selectedItem = (AbstractMachine) parent.getItemAtPosition(position);
-                                        Intent machineIntent = new Intent(getActivity().getBaseContext(), MachineActivity.class);
-                                        machineIntent.putExtra("documentKey", selectedItem.getDocumentKey());
-                                        startActivity(machineIntent);
-                                    }
-                                });
                             }
+                            Context ctx = getActivity().getApplicationContext();
+
+                            ListView listView = (ListView) getView().findViewById(R.id.machineList);
+
+                            MachineListViewAdapter adapter = new MachineListViewAdapter(machineList, ctx);
+                            listView.setAdapter(adapter);
+
+                            // Set an item click listener for ListView
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    // Get the selected item text from ListView
+                                    WashingMachine selectedItem = (WashingMachine) parent.getItemAtPosition(position);
+                                    Intent machineIntent = new Intent(getActivity().getBaseContext(), MachineActivity.class);
+                                    machineIntent.putExtra("documentKey", selectedItem.getDocumentKey());
+                                    startActivity(machineIntent);
+                                }
+                            });
+
                         } else {
                             Log.w("Error", "Error getting documents.", task.getException());
                         }

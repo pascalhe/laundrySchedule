@@ -3,29 +3,35 @@ package zhaw.ch.laundryschedule.usermanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.locations.LocationSpinner;
+import zhaw.ch.laundryschedule.locations.SpinLocationAdapter;
 import zhaw.ch.laundryschedule.models.Location;
 import zhaw.ch.laundryschedule.models.User;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity{
 
     private Button saveUserButton;
     private String documentKey;
@@ -34,6 +40,9 @@ public class UserActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText userNameEditText;
     private EditText passwordEditText;
+    private Location userLocation = null;
+    private List<Location> locationList = new ArrayList<Location>();
+    private SpinLocationAdapter spinLocationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +78,11 @@ public class UserActivity extends AppCompatActivity {
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    User user = documentSnapshot.toObject(User.class);
-                    if (user != null)
-                        setUserInForm(user);
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null){
+                    setUserInForm(user); // set user in form
+                    LocationSpinner.setLocationSpinner((Spinner)findViewById(R.id.locationId), user.getLocationDocId(), UserActivity.this);
+                }
                 }
             });
         }
@@ -118,7 +129,7 @@ public class UserActivity extends AppCompatActivity {
                 emailEditText.getText().toString(),
                 userNameEditText.getText().toString(),
                 passwordEditText.getText().toString(),
-                new Location()
+                LocationSpinner.getLocationReference()
         );
     }
 }
