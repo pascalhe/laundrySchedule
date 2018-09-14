@@ -1,31 +1,38 @@
 package zhaw.ch.laundryschedule.usermanagement;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.locations.SpinLocationAdapter;
 import zhaw.ch.laundryschedule.models.Location;
 import zhaw.ch.laundryschedule.models.User;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity{
 
     private Button saveUserButton;
     private String documentKey;
@@ -34,6 +41,10 @@ public class UserActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText userNameEditText;
     private EditText passwordEditText;
+    private Spinner spinner;
+    private Location userLocation = null;
+    private List<Location> locationList = new ArrayList<Location>();
+    private SpinLocationAdapter spinLocationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +86,58 @@ public class UserActivity extends AppCompatActivity {
                 }
             });
         }
+
+        // Get all users end send it to the listview
+        Firestore.getInstance().collection("locations")
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            final Location location = document.toObject(Location.class);
+                            location.setDocumentKey(document.getId());
+                            if(location.getStreet() != null){
+                                locationList.add(location);
+                            }
+                        }
+
+                        // List to array
+                        Location[] locationArr = new Location[locationList.size()];
+                        locationArr = locationList.toArray(locationArr);
+
+                        // Get spinner
+                        spinner = (Spinner) findViewById(R.id.locationId);
+
+                        // Creating adapter for spinner
+                        spinLocationAdapter = new SpinLocationAdapter(UserActivity.this,
+                                android.R.layout.simple_spinner_item, locationArr);
+
+                        // attaching data adapter to spinner
+                        spinner.setAdapter(spinLocationAdapter);
+
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                                userLocation = spinLocationAdapter.getItem(position);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapter) {  }
+                        });
+                    }else {
+                        Log.w("Error", "Error getting documents.", task.getException());
+                    }
+                }
+            });
+    }
+
+    private String getLocationReference(){
+        String collectionPath = "locations/";
+        if(userLocation == null)
+            return collectionPath += locationList.get(0).getDocumentKey();
+        return collectionPath += userLocation.getDocumentKey();
     }
 
     /**
@@ -118,7 +181,7 @@ public class UserActivity extends AppCompatActivity {
                 emailEditText.getText().toString(),
                 userNameEditText.getText().toString(),
                 passwordEditText.getText().toString(),
-                new Location()
+                getLocationReference()
         );
     }
 }

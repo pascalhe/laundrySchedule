@@ -53,6 +53,14 @@
             android:hint="Password"
             android:inputType="textPassword"/>
 
+        <Spinner
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/locationId"
+            android:spinnerMode="dropdown">
+        </Spinner>
+
         <Button
             android:layout_margin="10dp"
             android:id="@+id/saveUser"
