@@ -3,12 +3,11 @@ package zhaw.ch.laundryschedule;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,11 +15,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
 import zhaw.ch.laundryschedule.machines.MachineListFragment;
+<<<<<<< HEAD
 import zhaw.ch.laundryschedule.machines.MachineListViewAdapter;
 import zhaw.ch.laundryschedule.reservations.ReservationListFragment;
+=======
+import zhaw.ch.laundryschedule.usermanagement.LoginFragment;
+>>>>>>> b60c69a21d6ec9ad3d5fd6436644e725138606ce
 import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
 public class LSMainActivity extends AppCompatActivity
@@ -28,15 +35,20 @@ public class LSMainActivity extends AppCompatActivity
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentTransaction fragmentTransaction;
+    private FirebaseAuth mAuth;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lsmain);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        mAuth = FirebaseAuth.getInstance();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,13 +57,13 @@ public class LSMainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Check intent
@@ -61,8 +73,20 @@ public class LSMainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            //updateUI(currentUser);
+        } else {
+            setFragment(R.id.nav_login);
+        }
+    }
+
+    @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -96,42 +120,49 @@ public class LSMainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         setFragment(item.getItemId());
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void removeFragments(){
-        for (Fragment fragment:getSupportFragmentManager().getFragments()) {
+    private void removeFragments() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
     }
 
-    private void setFragment(int id){
+    private void setFragment(int id) {
         removeFragments();
         fragmentTransaction = fragmentManager.beginTransaction();
+<<<<<<< HEAD
         switch (id){
             case R.id.nav_reservation:
                 ReservationListFragment reservationListFragment = ReservationListFragment.newInstance();
                 fragmentTransaction.add(R.id.fragment_container, reservationListFragment,"reservation");
+=======
+        switch (id) {
+            case R.id.nav_camera:
+
+>>>>>>> b60c69a21d6ec9ad3d5fd6436644e725138606ce
                 break;
             case R.id.nav_gallery:
 
                 break;
             case R.id.nav_login:
-
+                LoginFragment loginFragment = LoginFragment.newInstance();
+                fragmentTransaction.add(R.id.fragment_container, loginFragment, "login");
                 break;
             case R.id.nav_usermanagement:
                 UserListFragment userListFragment = UserListFragment.newInstance();
-                fragmentTransaction.add(R.id.fragment_container, userListFragment,"user");
+                fragmentTransaction.add(R.id.fragment_container, userListFragment, "user");
                 break;
             case R.id.nav_washing_machines:
                 MachineListFragment machineListFragment = MachineListFragment.newInstance();
-                fragmentTransaction.add(R.id.fragment_container, machineListFragment,"machine");
+                fragmentTransaction.add(R.id.fragment_container, machineListFragment, "machine");
                 break;
             case R.id.nav_locations:
                 LocationListFragment locationListFragment = LocationListFragment.newInstance();
-                fragmentTransaction.add(R.id.fragment_container, locationListFragment,"location");
+                fragmentTransaction.add(R.id.fragment_container, locationListFragment, "location");
                 break;
         }
         fragmentTransaction.commit();
