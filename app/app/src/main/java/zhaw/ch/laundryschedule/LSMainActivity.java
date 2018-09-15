@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
 import zhaw.ch.laundryschedule.machines.MachineListFragment;
 import zhaw.ch.laundryschedule.machines.MachineListViewAdapter;
+import zhaw.ch.laundryschedule.reservations.ReservationListFragment;
 import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
 public class LSMainActivity extends AppCompatActivity
@@ -55,7 +56,7 @@ public class LSMainActivity extends AppCompatActivity
 
         // Check intent
         Intent intent = getIntent();
-        setFragment(intent.getIntExtra("menuId", R.id.nav_camera));
+        setFragment(intent.getIntExtra("menuId", R.id.nav_reservation));
 
     }
 
@@ -110,8 +111,9 @@ public class LSMainActivity extends AppCompatActivity
         removeFragments();
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (id){
-            case R.id.nav_camera:
-
+            case R.id.nav_reservation:
+                ReservationListFragment reservationListFragment = ReservationListFragment.newInstance();
+                fragmentTransaction.add(R.id.fragment_container, reservationListFragment,"reservation");
                 break;
             case R.id.nav_gallery:
 

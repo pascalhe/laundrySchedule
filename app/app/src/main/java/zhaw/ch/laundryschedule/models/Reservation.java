@@ -6,15 +6,19 @@ public class Reservation extends AbstractBaseModel {
 
     private Date from;
     private Date to;
+    private String userDocId;
 
-    public Reservation(){
+    public Reservation(int id, Date from, Date to, String userDocId){
         super();
+        this.from = from;
+        this.to = to;
+        this.userDocId = userDocId;
     }
 
-    public Reservation(String _id, Date _from, Date _to){
-        super(_id);
-        from = _from;
-        to = _to;
+    public Reservation(Date from, Date to, String userDocId){
+        this.from = from;
+        this.to = to;
+        this.userDocId = userDocId;
     }
 
     public Date getFrom() {
@@ -33,6 +37,11 @@ public class Reservation extends AbstractBaseModel {
         this.to = to;
     }
 
+    public String getUserDocId(){
+        return userDocId;
+    }
 
-
+    public void setUserDocId(String userDocId){
+        this.userDocId = userDocId;
+    }
 }
