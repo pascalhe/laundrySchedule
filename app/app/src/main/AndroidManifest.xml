@@ -33,7 +33,7 @@
             android:label="@string/title_activity_location"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".usermanagement.LoginActivity"
+            android:name=".usermanagement.LoginFragment"
             android:label="@string/title_activity_login" />
         <activity
             android:name=".machines.MachineActivity"
