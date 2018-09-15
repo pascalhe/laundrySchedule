@@ -22,7 +22,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
 import zhaw.ch.laundryschedule.machines.MachineListFragment;
+<<<<<<< HEAD
+import zhaw.ch.laundryschedule.machines.MachineListViewAdapter;
+import zhaw.ch.laundryschedule.reservations.ReservationListFragment;
+=======
 import zhaw.ch.laundryschedule.usermanagement.LoginFragment;
+>>>>>>> b60c69a21d6ec9ad3d5fd6436644e725138606ce
 import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
 public class LSMainActivity extends AppCompatActivity
@@ -63,7 +68,7 @@ public class LSMainActivity extends AppCompatActivity
 
         // Check intent
         Intent intent = getIntent();
-        setFragment(intent.getIntExtra("menuId", R.id.nav_camera));
+        setFragment(intent.getIntExtra("menuId", R.id.nav_reservation));
 
     }
 
@@ -129,9 +134,16 @@ public class LSMainActivity extends AppCompatActivity
     private void setFragment(int id) {
         removeFragments();
         fragmentTransaction = fragmentManager.beginTransaction();
+<<<<<<< HEAD
+        switch (id){
+            case R.id.nav_reservation:
+                ReservationListFragment reservationListFragment = ReservationListFragment.newInstance();
+                fragmentTransaction.add(R.id.fragment_container, reservationListFragment,"reservation");
+=======
         switch (id) {
             case R.id.nav_camera:
 
+>>>>>>> b60c69a21d6ec9ad3d5fd6436644e725138606ce
                 break;
             case R.id.nav_gallery:
 
