@@ -23,14 +23,13 @@ import java.util.List;
 
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
-import zhaw.ch.laundryschedule.models.AbstractMachine;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
 
 public class MachineListFragment extends Fragment {
 
 
-    private List<AbstractMachine> machineList = new ArrayList<>();
+    private List<WashingMachine> machineList = new ArrayList<>();
     private Button addMachineButton;
 
     public static MachineListFragment newInstance() {

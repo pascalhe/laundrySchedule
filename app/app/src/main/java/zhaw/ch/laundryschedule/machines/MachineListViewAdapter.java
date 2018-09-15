@@ -10,14 +10,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import zhaw.ch.laundryschedule.R;
-import zhaw.ch.laundryschedule.models.AbstractMachine;
+import zhaw.ch.laundryschedule.models.WashingMachine;
 
 public class MachineListViewAdapter extends BaseAdapter {
 
-    protected List<AbstractMachine> machineList;
+    protected List<WashingMachine> machineList;
     protected Context context;
 
-    public MachineListViewAdapter(List<AbstractMachine> machineList, Context context) {
+    public MachineListViewAdapter(List<WashingMachine> machineList, Context context) {
         this.machineList = machineList;
         this.context = context;
     }
@@ -48,7 +48,7 @@ public class MachineListViewAdapter extends BaseAdapter {
         TextView name = vi.findViewById(R.id.machineName);
         TextView capacity = vi.findViewById(R.id.machineCapacity);
 
-        AbstractMachine machine = machineList.get(i);
+        WashingMachine machine = machineList.get(i);
 
         name.setText(machine.getName());
         capacity.setText(machine.getCapacity());

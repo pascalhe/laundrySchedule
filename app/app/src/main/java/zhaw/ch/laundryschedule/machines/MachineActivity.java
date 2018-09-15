@@ -2,8 +2,6 @@ package zhaw.ch.laundryschedule.machines;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,11 +19,7 @@ import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.locations.LocationSpinner;
-import zhaw.ch.laundryschedule.models.AbstractBaseModel;
-import zhaw.ch.laundryschedule.models.AbstractMachine;
-import zhaw.ch.laundryschedule.models.Location;
 import zhaw.ch.laundryschedule.models.WashingMachine;
-import zhaw.ch.laundryschedule.usermanagement.UserActivity;
 
 public class MachineActivity extends AppCompatActivity {
 
@@ -76,7 +70,7 @@ public class MachineActivity extends AppCompatActivity {
     }
 
     private void saveMachine() {
-        AbstractMachine machine = getMachineFromForm();
+        WashingMachine machine = getMachineFromForm();
 
         // If documentKey empty, generate a new key
         if (documentKey == null || documentKey.isEmpty())
@@ -88,7 +82,7 @@ public class MachineActivity extends AppCompatActivity {
         startActivity(lSMainActivityIntent);
     }
 
-    private void setMachineInForm(AbstractMachine machine) {
+    private void setMachineInForm(WashingMachine machine) {
         name.setText(machine.getName());
         capacity.setText(machine.getCapacity());
     }
