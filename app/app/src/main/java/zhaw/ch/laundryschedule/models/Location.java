@@ -12,18 +12,9 @@ public class Location extends AbstractBaseModel {
     private String country;
     private List<User> users;
 
-    public Location(){
+    public Location() {
         super();
         users = new ArrayList<>();
-    }
-
-    public Location(String _id, String _street, String _streetNumber, int _zipCode, String _city, String _country) {
-        super(_id);
-        street = _street;
-        streetNumber = _streetNumber;
-        zipCode = _zipCode;
-        city = _city;
-        country = _country;
     }
 
     public Location(String _street, String _streetNumber, int _zipCode, String _city, String _country) {

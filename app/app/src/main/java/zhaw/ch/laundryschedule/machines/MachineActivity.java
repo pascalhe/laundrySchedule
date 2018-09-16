@@ -2,8 +2,6 @@ package zhaw.ch.laundryschedule.machines;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,11 +19,8 @@ import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.locations.LocationSpinner;
-import zhaw.ch.laundryschedule.models.AbstractBaseModel;
 import zhaw.ch.laundryschedule.models.AbstractMachine;
-import zhaw.ch.laundryschedule.models.Location;
 import zhaw.ch.laundryschedule.models.WashingMachine;
-import zhaw.ch.laundryschedule.usermanagement.UserActivity;
 
 public class MachineActivity extends AppCompatActivity {
 
@@ -66,12 +61,14 @@ public class MachineActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     WashingMachine machine = documentSnapshot.toObject(WashingMachine.class);
-                    if(machine != null){
+                    if (machine != null) {
                         setMachineInForm(machine);
-                        LocationSpinner.setLocationSpinner((Spinner)findViewById(R.id.locationId), machine.getLocationDocId(), MachineActivity.this);
+                        LocationSpinner.setLocationSpinner((Spinner) findViewById(R.id.locationId), machine.getLocationDocId(), MachineActivity.this);
                     }
                 }
             });
+        } else {
+            LocationSpinner.setLocationSpinner((Spinner) findViewById(R.id.locationId), null, MachineActivity.this);
         }
     }
 

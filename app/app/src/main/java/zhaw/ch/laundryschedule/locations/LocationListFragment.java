@@ -21,19 +21,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.Location;
-import zhaw.ch.laundryschedule.usermanagement.UserActivity;
-import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
-public class LocationListFragment extends Fragment{
+public class LocationListFragment extends Fragment {
 
     private List<Location> locationList = new ArrayList<>();
     private Button addLocationButton;
 
-    public static LocationListFragment newInstance(){
+    public static LocationListFragment newInstance() {
         LocationListFragment fragment = new LocationListFragment();
         Bundle args = new Bundle();
         return fragment;
@@ -45,7 +42,7 @@ public class LocationListFragment extends Fragment{
         View rootV = inflater.inflate(R.layout.content_location_list, container, false);
 
         // Add location button
-        addLocationButton = (Button)rootV.findViewById(R.id.addLocationButton);
+        addLocationButton = (Button) rootV.findViewById(R.id.addLocationButton);
         addLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

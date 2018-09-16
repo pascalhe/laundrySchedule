@@ -8,10 +8,27 @@
     tools:context=".usermanagement.UserActivity"
     tools:showIn="@layout/activity_user">
 
+    <ProgressBar
+        android:id="@+id/user_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
     <LinearLayout
+        android:id="@+id/user_form"
         android:layout_width="fill_parent"
         android:orientation="vertical"
         android:layout_height="fill_parent">
+
+        <EditText
+            android:layout_margin="10dp"
+            android:id="@+id/firstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Firstname"
+            android:inputType="textPersonName" />
 
         <EditText
             android:layout_margin="10dp"
@@ -21,13 +38,6 @@
             android:hint="Lastname"
             android:inputType="textPersonName"/>
 
-        <EditText
-            android:layout_margin="10dp"
-            android:id="@+id/firstName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Firstname"
-            android:inputType="textPersonName" />
 
         <EditText
             android:layout_margin="10dp"
