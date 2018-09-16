@@ -8,56 +8,59 @@
     tools:context=".reservations.ReservationActivity"
     tools:showIn="@layout/activity_reservation">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:orientation="vertical"
-        android:layout_height="fill_parent">
+
 
         <EditText
             android:layout_margin="10dp"
+            android:id="@+id/reservationDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="From"
-            android:inputType="datetime"/>
+            android:editable="false"
+            android:focusable="false"
+            android:hint="Date"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/reservationTimeFrom"/>
 
-        <DatePicker
-            android:layout_margin="10dp"
-            android:id="@+id/reservationDateFrom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="From"
-            android:inputType="date"/>
-
-        <TimePicker
+        <EditText
             android:layout_margin="10dp"
             android:id="@+id/reservationTimeFrom"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:editable="false"
+            android:focusable="false"
             android:hint="From"
-            android:inputType="time"/>
+            android:inputType="time"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reservationDate"
+            app:layout_constraintRight_toLeftOf="@id/reservationTimeTo"
+            app:layout_constraintBottom_toTopOf="@id/washingMachineId"/>
 
-        <DatePicker
-            android:layout_margin="10dp"
-            android:id="@+id/reservationDateTo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="To"
-            android:inputType="date"/>
-
-        <TimePicker
+        <EditText
             android:layout_margin="10dp"
             android:id="@+id/reservationTimeTo"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:editable="false"
+            android:focusable="false"
             android:hint="To"
-            android:inputType="time"/>
+            android:inputType="time"
+            app:layout_constraintLeft_toRightOf="@id/reservationTimeFrom"
+            app:layout_constraintTop_toBottomOf="@id/reservationDate"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/washingMachineId"/>
 
         <Spinner
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/wachingMachineId"
-            android:spinnerMode="dropdown">
+            android:id="@+id/washingMachineId"
+            android:spinnerMode="dropdown"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reservationTimeFrom"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/saveReservation">
         </Spinner>
 
         <Button
@@ -65,8 +68,9 @@
             android:id="@+id/saveReservation"
             android:text="Add Reservation"
             android:layout_width="match_parent"
-            android:layout_height="60dp" />
-
-    </LinearLayout>
+            android:layout_height="60dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/washingMachineId"
+            app:layout_constraintRight_toRightOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

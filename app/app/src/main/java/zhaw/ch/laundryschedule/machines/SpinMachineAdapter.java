@@ -1,4 +1,4 @@
-package zhaw.ch.laundryschedule.locations;
+package zhaw.ch.laundryschedule.machines;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,16 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import zhaw.ch.laundryschedule.models.Location;
+import zhaw.ch.laundryschedule.models.WashingMachine;
 
-public class SpinLocationAdapter extends ArrayAdapter<Location> {
-
-    // Your sent context
+public class SpinMachineAdapter extends ArrayAdapter<WashingMachine> {
     private Context context;
-    // Your custom values for the spinner (User)
-    private Location[] values;
+    private WashingMachine[] values;
 
-    public SpinLocationAdapter(Context context, int textViewResourceId,Location[] values) {
+    public SpinMachineAdapter(Context context, int textViewResourceId, WashingMachine[] values){
         super(context, textViewResourceId, values);
         this.context = context;
         this.values = values;
@@ -28,7 +25,7 @@ public class SpinLocationAdapter extends ArrayAdapter<Location> {
     }
 
     @Override
-    public Location getItem(int position){
+    public WashingMachine getItem(int position){
         return values[position];
     }
 
@@ -43,8 +40,7 @@ public class SpinLocationAdapter extends ArrayAdapter<Location> {
         label.setPadding(20,20,20,20);
         label.setTextColor(Color.BLACK);
         label.setTextSize(18);
-        String lableText = values[position].getStreet() + " " + values[position].getStreetNumber()
-                + " - " + values[position].getCity() + " " + values[position].getZipCode();
+        String lableText = values[position].getName() + " " + values[position].getCapacity();
         label.setText(lableText);
         return label;
     }
@@ -55,8 +51,7 @@ public class SpinLocationAdapter extends ArrayAdapter<Location> {
         label.setTextColor(Color.BLACK);
         label.setPadding(20,20,20,20);
         label.setTextSize(18);
-        String lableText = values[position].getStreet() + " " + values[position].getStreetNumber()
-                + " - " + values[position].getCity() + " " + values[position].getZipCode();
+        String lableText = values[position].getName() + " " + values[position].getCapacity();
         label.setText(lableText);
         return label;
     }
