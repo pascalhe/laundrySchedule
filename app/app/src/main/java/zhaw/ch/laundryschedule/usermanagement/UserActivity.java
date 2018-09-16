@@ -169,8 +169,8 @@ public class UserActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Snackbar.make(getCurrentFocus(), "Failed: " + task.getException().getMessage(), Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+//                            Snackbar.make(getCurrentFocus(), "Failed: " + task.getException().getMessage(), Snackbar.LENGTH_LONG)
+//                                    .setAction("Action", null).show();
                         }
                     }
                 });

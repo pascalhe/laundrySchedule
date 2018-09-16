@@ -13,6 +13,19 @@
     <string name="title_activity_location">LocationActivity</string>
     <string name="title_activity_machine">Machines</string>
 
+    <string name="log_out">Log out</string>
+    <string name="success">Success</string>
+
+    <string name="progress_downloading">Downloading…</string>
+    <string name="progress_uploading">Uploading…</string>
+    <string name="progress_auth">Signing In…</string>
+
+    <string name="upload_success">Upload finished</string>
+    <string name="upload_failure">Upload failed</string>\
+
+    <string name="download_success">Download finished</string>
+    <string name="download_failure">Download failure</string>
+
     <!-- Strings related to login -->
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>

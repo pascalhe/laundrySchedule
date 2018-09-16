@@ -38,11 +38,12 @@
         <activity
             android:name=".machines.MachineActivity"
             android:label="@string/title_activity_machine"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".reservations.ReservationActivity"
             android:label="@string/title_activity_reservation"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".usermanagement.ProfilePictureActivity"></activity>
     </application>
 
 </manifest>
