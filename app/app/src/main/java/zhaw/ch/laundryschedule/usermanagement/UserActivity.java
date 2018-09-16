@@ -85,6 +85,8 @@ public class UserActivity extends AppCompatActivity{
                 }
                 }
             });
+        } else{
+            LocationSpinner.setLocationSpinner((Spinner)findViewById(R.id.locationId), null, UserActivity.this);
         }
     }
 

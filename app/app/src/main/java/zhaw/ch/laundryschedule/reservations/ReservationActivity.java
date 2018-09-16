@@ -2,11 +2,14 @@ package zhaw.ch.laundryschedule.reservations;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,6 +24,7 @@ import java.util.UUID;
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.machines.MachineSpinner;
 import zhaw.ch.laundryschedule.models.Reservation;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
@@ -28,10 +32,9 @@ public class ReservationActivity extends AppCompatActivity {
 
     private Button saveReservationButton;
     private String documentKey;
-    private DatePicker reservationDateFrom;
-    private DatePicker reservationDateTo;
-    private TimePicker reservationTimeFrom;
-    private TimePicker reservationTimeTo;
+    private EditText reservationDateFrom;
+    private EditText reservationTimeFrom;
+    private EditText reservationTimeTo;
     private WashingMachine washingMachine = null;
     private List<WashingMachine> washingMachineList = new ArrayList<>();
 
@@ -43,10 +46,9 @@ public class ReservationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // get Times and Dates
-        reservationDateFrom = (DatePicker) findViewById(R.id.reservationDateFrom);
-        reservationDateTo = (DatePicker) findViewById(R.id.reservationDateTo);
-        reservationTimeFrom = (TimePicker) findViewById(R.id.reservationTimeFrom);
-        reservationTimeTo = (TimePicker) findViewById(R.id.reservationTimeTo);
+        reservationDateFrom = (EditText) findViewById(R.id.reservationDate);
+        reservationTimeFrom = (EditText) findViewById(R.id.reservationTimeFrom);
+        reservationTimeTo = (EditText) findViewById(R.id.reservationTimeTo);
 
         // Save or add user
         saveReservationButton = (Button) findViewById(R.id.saveReservation);
@@ -71,11 +73,46 @@ public class ReservationActivity extends AppCompatActivity {
                     Reservation reservation = documentSnapshot.toObject(Reservation.class);
                     if (reservation != null){
                         setReservationInForm(reservation);
-                        //LocationSpinner.setLocationSpinner((Spinner)findViewById(R.id.locationId), user.getLocationDocId(), UserActivity.this);
+                        MachineSpinner.setMachineSpinner((Spinner) findViewById(R.id.washingMachineId), null, ReservationActivity.this);
                     }
                 }
             });
+        } else {
+            MachineSpinner.setMachineSpinner((Spinner) findViewById(R.id.washingMachineId), null, ReservationActivity.this);
         }
+
+        // Date picker
+        reservationDateFrom.setClickable(true);
+        reservationDateFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment newFragment = new DatePickerFragment();
+                newFragment.setEditBox(reservationDateFrom);
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+            }
+        });
+
+        // Time picker from
+        reservationTimeFrom.setClickable(true);
+        reservationTimeFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment newFragment = new TimePickerFragment();
+                newFragment.setEditBox(reservationTimeFrom);
+                newFragment.show(getSupportFragmentManager(), "timePicker");
+            }
+        });
+
+        // Time picker to
+        reservationTimeTo.setClickable(true);
+        reservationTimeTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment newFragment = new TimePickerFragment();
+                newFragment.setEditBox(reservationTimeTo);
+                newFragment.show(getSupportFragmentManager(), "timePicker");
+            }
+        });
     }
 
     /**
@@ -100,6 +137,7 @@ public class ReservationActivity extends AppCompatActivity {
      * @param reservation
      */
     private void setReservationInForm(Reservation reservation) {
+        /*
         reservationDateFrom.updateDate(reservation.getFrom().getYear(),
                 reservation.getFrom().getMonth(),
                 reservation.getFrom().getDay());
@@ -111,6 +149,7 @@ public class ReservationActivity extends AppCompatActivity {
                 reservation.getTo().getDay());
         reservationTimeTo.setHour(reservation.getTo().getHours());
         reservationTimeTo.setMinute(reservation.getTo().getMinutes());
+        */
     }
 
     /**

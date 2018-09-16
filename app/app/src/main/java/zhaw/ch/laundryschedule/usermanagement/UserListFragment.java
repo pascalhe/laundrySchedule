@@ -65,7 +65,7 @@ public class UserListFragment extends Fragment {
                                 userList.add(user);
                             }
 
-                            Context ctx = getActivity().getApplicationContext();;
+                            Context ctx = getActivity().getApplicationContext();
                             ListView listView = (ListView)getView().findViewById(R.id.user_list);
 
                             UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);

@@ -65,7 +65,6 @@ public class LSMainActivity extends AppCompatActivity
         // Check intent
         Intent intent = getIntent();
         setFragment(intent.getIntExtra("menuId", R.id.nav_reservation));
-
     }
 
     @Override
