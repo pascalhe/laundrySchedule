@@ -2,8 +2,6 @@ package zhaw.ch.laundryschedule.locations;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,7 +12,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import zhaw.ch.laundryschedule.LSMainActivity;
@@ -40,11 +37,11 @@ public class LocationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // get EditTexts
-        street = (EditText)findViewById(R.id.street);
-        streetNumber = (EditText)findViewById(R.id.streetNumber);
-        zipCode = (EditText)findViewById(R.id.zipCode);
-        city = (EditText)findViewById(R.id.city);
-        country = (EditText)findViewById(R.id.country);
+        street = (EditText) findViewById(R.id.street);
+        streetNumber = (EditText) findViewById(R.id.streetNumber);
+        zipCode = (EditText) findViewById(R.id.zipCode);
+        city = (EditText) findViewById(R.id.city);
+        country = (EditText) findViewById(R.id.country);
 
         // Save or add location
         saveLocationButton = (Button) findViewById(R.id.saveLocation);
@@ -57,7 +54,7 @@ public class LocationActivity extends AppCompatActivity {
 
         // Check intent
         Intent locationIntent = getIntent();
-        if(locationIntent.hasExtra("documentKey")){
+        if (locationIntent.hasExtra("documentKey")) {
             // Override button text from add to update
             saveLocationButton.setText("Update Location");
 
@@ -67,18 +64,18 @@ public class LocationActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     Location location = documentSnapshot.toObject(Location.class);
-                    if(location != null)
+                    if (location != null)
                         setLocationInForm(location);
                 }
             });
         }
     }
 
-    private void saveLocation(){
+    private void saveLocation() {
         Location location = getLocationFromForm();
 
         // If documentKey empty, generate a new key
-        if(documentKey == null || documentKey.isEmpty())
+        if (documentKey == null || documentKey.isEmpty())
             documentKey = UUID.randomUUID().toString().replace("-", "");
 
         Firestore.getInstance().collection("locations").document(documentKey).set(location);
@@ -87,7 +84,7 @@ public class LocationActivity extends AppCompatActivity {
         startActivity(lSMainActivityIntent);
     }
 
-    private void setLocationInForm(Location location){
+    private void setLocationInForm(Location location) {
         street.setText(location.getStreet());
         streetNumber.setText(location.getStreetNumber());
         zipCode.setText(Integer.toString(location.getZipCode()));
@@ -95,7 +92,7 @@ public class LocationActivity extends AppCompatActivity {
         country.setText(location.getCountry());
     }
 
-    private Location getLocationFromForm(){
+    private Location getLocationFromForm() {
         return new Location(
                 street.getText().toString(),
                 streetNumber.getText().toString(),

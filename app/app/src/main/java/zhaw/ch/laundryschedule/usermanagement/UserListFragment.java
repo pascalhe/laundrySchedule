@@ -40,7 +40,7 @@ public class UserListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInst) {
 
         // set the fragment layout.
-        View rootV = inflater.inflate(R.layout.content_user_list, container, false);
+        final View rootV = inflater.inflate(R.layout.content_user_list, container, false);
 
         // Add user button
         addUserButton = (Button)rootV.findViewById(R.id.addUserButton);
@@ -65,7 +65,7 @@ public class UserListFragment extends Fragment {
                                 userList.add(user);
                             }
 
-                            Context ctx = getActivity().getApplicationContext();;
+                            Context ctx = rootV.getContext().getApplicationContext();
                             ListView listView = (ListView)getView().findViewById(R.id.user_list);
 
                             UserListViewAdapter adapter = new UserListViewAdapter(userList, ctx);

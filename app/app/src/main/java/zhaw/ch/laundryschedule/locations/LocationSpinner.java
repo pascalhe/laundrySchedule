@@ -24,13 +24,13 @@ public class LocationSpinner {
     private static SpinLocationAdapter spinLocationAdapter;
     private static Location selectedLocation;
 
-    public static Location getSelectedLocation(){
+    public static Location getSelectedLocation() {
         return selectedLocation;
     }
 
-    public static String getLocationReference(){
+    public static String getLocationReference() {
         String docKey = selectedLocation.getDocumentKey();
-        if(docKey != null || docKey.isEmpty())
+        if (docKey != null || !docKey.isEmpty())
             return docKey;
         else
             return null;

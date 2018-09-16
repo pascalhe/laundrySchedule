@@ -12,12 +12,12 @@ import java.util.List;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.models.Location;
 
-public class LocationListViewAdapter extends BaseAdapter{
+public class LocationListViewAdapter extends BaseAdapter {
 
-    protected List<Location> locationList;
+    private List<Location> locationList;
     protected Context context;
 
-    public LocationListViewAdapter(List<Location> locationList, Context context){
+    LocationListViewAdapter(List<Location> locationList, Context context) {
         this.locationList = locationList;
         this.context = context;
     }
@@ -40,8 +40,9 @@ public class LocationListViewAdapter extends BaseAdapter{
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View vi = view;
-        if(vi == null) {
+        if (vi == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            assert inflater != null;
             vi = inflater.inflate(R.layout.cell_location_list, null);
         }
 

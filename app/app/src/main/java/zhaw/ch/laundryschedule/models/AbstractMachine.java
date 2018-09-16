@@ -5,16 +5,11 @@ public abstract class AbstractMachine extends AbstractBaseModel {
     private String name;
     private String capacity;
 
-    public AbstractMachine(){
+    AbstractMachine() {
         super();
     }
 
-    public AbstractMachine(String _id, String _name, String _capacity){
-        super(_id);
-        name = _name;
-        capacity = _capacity;
-    }
-    public AbstractMachine(String _name, String _capacity){
+    AbstractMachine(String _name, String _capacity) {
         super();
         name = _name;
         capacity = _capacity;
