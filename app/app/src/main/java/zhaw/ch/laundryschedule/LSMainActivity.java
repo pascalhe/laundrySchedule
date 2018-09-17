@@ -75,7 +75,7 @@ public class LSMainActivity extends AppCompatActivity
         if (currentUser != null) {
             //updateUI(currentUser);
         } else {
-            setFragment(R.id.nav_login);
+            //setFragment(R.id.nav_login);
         }
     }
 

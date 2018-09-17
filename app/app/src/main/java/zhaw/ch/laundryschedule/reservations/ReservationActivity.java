@@ -16,7 +16,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -127,7 +131,7 @@ public class ReservationActivity extends AppCompatActivity {
 
         Firestore.getInstance().collection("reservations").document(documentKey).set(reservation);
         Intent lSMainActivityIntent = new Intent(getBaseContext(), LSMainActivity.class);
-        lSMainActivityIntent.putExtra("menuId", R.id.nav_usermanagement);
+        lSMainActivityIntent.putExtra("menuId", R.id.nav_reservation);
         startActivity(lSMainActivityIntent);
     }
 
@@ -158,12 +162,37 @@ public class ReservationActivity extends AppCompatActivity {
      * @return Reservation
      */
     private Reservation getReservationFromForm() {
+        Date from;
+        Date to;
+        Date timeFrom;
+        Date timeTo;
 
-        return new Reservation(
-                new Date(),
-                new Date(),
-                ""
-        );
+        String date_var=(reservationDateFrom.getText().toString());
+        String timeFrom_var =(reservationTimeFrom.getText().toString());
+        String timeTo_var =(reservationTimeTo.getText().toString());
+        DateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormat timeFormatter = new SimpleDateFormat("HH:ss");
+
+        try {
+            timeFrom = timeFormatter.parse(timeFrom_var);
+            timeTo = timeFormatter.parse(timeTo_var);
+            from = dateFormatter.parse(date_var);
+            to = dateFormatter.parse(date_var);
+
+            from.setHours(timeFrom.getHours());
+            from.setMinutes(timeFrom.getMinutes());
+            to.setHours(timeTo.getHours());
+            to.setMinutes(timeTo.getMinutes());
+
+            return new Reservation(
+                    from,
+                    to,
+                    ""
+            );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
