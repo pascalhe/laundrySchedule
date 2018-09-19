@@ -47,6 +47,9 @@ public class UploadService extends BaseTaskService {
         // [START get_storage_ref]
         mStorageRef = FirebaseStorage.getInstance().getReference();
         // [END get_storage_ref]
+        Log.d(TAG, "onCreate: "+mStorageRef.getBucket().toString());
+        Log.d(TAG, "onCreate: "+mStorageRef.getPath());
+        Log.d(TAG, "onCreate: "+mStorageRef.getName());
     }
 
     @Nullable
@@ -55,20 +58,17 @@ public class UploadService extends BaseTaskService {
         return null;
     }
 
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand:" + intent + ":" + startId);
         if (ACTION_UPLOAD.equals(intent.getAction())) {
             Uri fileUri = intent.getParcelableExtra(EXTRA_FILE_URI);
-
-            // Make sure we have permission to read the data
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                getContentResolver().takePersistableUriPermission(
-                        fileUri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
+            Log.d(TAG, "onStartCommand: " + fileUri.toString());
 
             uploadFromUri(fileUri);
+
         }
 
         return START_REDELIVER_INTENT;
@@ -76,7 +76,7 @@ public class UploadService extends BaseTaskService {
 
     // [START upload_from_uri]
     private void uploadFromUri(final Uri fileUri) {
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
+        Log.d(TAG, "UPLOAD uploadFromUri:src:" + fileUri.toString());
 
         // [START_EXCLUDE]
         taskStarted();
@@ -85,7 +85,7 @@ public class UploadService extends BaseTaskService {
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
-        final StorageReference photoRef = mStorageRef.child("photos")
+        final StorageReference photoRef = mStorageRef.child("profilePicture")
                 .child(fileUri.getLastPathSegment());
         // [END get_child_ref]
 
