@@ -1,79 +1,134 @@
-{  
-    "users":{  
-        "uu1111":{  
+{
+    "users":{
+        "u111":{
             "firstName":"Max",
             "lastName":"Power",
             "username":"maxpow",
             "email":"maxpow@gmail.com",
-            "location":{  
+            "location":{
 
             },
-            "locationDocId":"loc1111"
+            "locationDocId":"loc111"
         },
-        "uu2222":{  
+        "u222":{
             "firstName":"Heidi",
             "lastName":"Peter",
             "username":"heipe",
             "email":"heidipeter@gmail.com",
-            "location":{  
+            "location":{
 
             },
-            "locationDocId":"loc1111"
+            "locationDocId":"loc111"
         },
-        "uu3333":{  
+        "u333":{
             "firstName":"Mr",
             "lastName":"X",
             "username":"mrX",
             "email":"mrx@gmail.com",
-            "location":{  
+            "location":{
 
             },
             "locationDocId":"loc222"
         }
     },
-    "locations": {
-        "loc1111": {
-            "street": "Nussbaumstrasse",
-            "streetNumber": "11",
-            "zipCode": "8003",
-            "city": "Zürich",
-            "country": "Schweiz"
+    "locations":{
+        "loc111":{
+            "street":"Nussbaumstrasse",
+            "streetNumber":"11",
+            "zipCode":"8003",
+            "city":"Zürich",
+            "country":"Schweiz"
         },
-        "loc222": {
-            "street": "Spinnereiplatz",
-            "streetNumber": "1",
-            "zipCode": "8041",
-            "city": "Zürich",
-            "country": "Schweiz"
+        "loc222":{
+            "street":"Spinnereiplatz",
+            "streetNumber":"1",
+            "zipCode":"8041",
+            "city":"Zürich",
+            "country":"Schweiz"
         }
     },
-    "machines": {
-        "mch111": {
-            "name": "V-Zug 21323",
-            "capacity": "15kg",
-            "locationDocId" "loc111"
+    "machines":{
+        "mch111":{
+            "name":"V-Zug 21323",
+            "capacity":"15kg",
+            "locationDocId":"loc111"
         },
-        "mch111": {
-            "name": "Sibir",
-            "capacity": "12kg",
-            "locationDocId" "loc222"
+        "mch222":{
+            "name":"Sibir",
+            "capacity":"12kg",
+            "locationDocId":"loc222"
         }
     },
-    
-    
-    "userReservations": {
-        "u111": {
-            "-KAB6ygHkvPkUiZn7CHT": {
-                "from": August 18, 2018 at 11:00:00 AM UTC+2,
-                "to": August 18, 2018 at 14:00:00 AM UTC+2,
-                "waschingMachineName": "V-Zug 21323"
-                "waschingMachineDocId": "mch111"
+    "userReservations":{
+        "u111":{
+            "-LKOIHNKL2342355":{
+                "from":"August 18, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 18, 2018 at 14:00:00 AM UTC+2",
+                "waschingMachineName":"V-Zug 21323",
+                "waschingMachineDocId":"mch111"
             },
-                        "-KAB6ygHkvPkUiZn7CHT": {
-                "from": August 18, 2018 at 11:00:00 AM UTC+2,
-                "to": August 18, 2018 at 14:00:00 AM UTC+2,
-                "waschingMachineName": "V-Zug 21323"
-                "waschingMachineDocId": "mch111"
+            "-ALKSJFE234W3453":{
+                "from":"August 28, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 28, 2018 at 14:00:00 AM UTC+2",
+                "waschingMachineName":"V-Zug 21323",
+                "waschingMachineDocId":"mch111"
             }
-      },
- 
+        },
+        "u222":{
+            "-ASGEWFRG45233452":{
+                "from":"August 20, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 20, 2018 at 14:00:00 AM UTC+2",
+                "waschingMachineName":"V-Zug 21323",
+                "waschingMachineDocId":"mch111"
+            },
+            "-VHJRTHB345345443":{
+                "from":"August 27, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 27, 2018 at 14:00:00 AM UTC+2",
+                "waschingMachineName":"V-Zug 21323",
+                "waschingMachineDocId":"mch111"
+            }
+        },
+        "u333":{
+            "-GETRGLM234224551":{
+                "from":"August 15, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 15, 2018 at 14:00:00 AM UTC+2",
+                "waschingMachineName":"Sibir",
+                "waschingMachineDocId":"mch222"
+            }
+        }
+    },
+    "machineReservations":{
+        "mch111":{
+            "-DFGWRETGK324234":{
+                "from":"August 18, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 18, 2018 at 14:00:00 AM UTC+2",
+                "userName":"maxpow",
+                "userDocId":"u111"
+            },
+            "-EWRTGFVF3455532":{
+                "from":"August 20, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 20, 2018 at 14:00:00 AM UTC+2",
+                "userName":"heipe",
+                "userDocId":"u222"
+            },
+            "-IJKNLNII1098884":{
+                "from":"August 27, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 27, 2018 at 14:00:00 AM UTC+2",
+                "userName":"heipe",
+                "userDocId":"u222"
+            },
+            "-DRGTRHE32423321":{
+                "from":"August 28, 2018 at 11:00:00 AM UTC+2",
+                "to":"August 28, 2018 at 14:00:00 AM UTC+2",
+                "userName":"maxpow",
+                "userDocId":"u111"
+            }
+        },
+        "mch222":{
+            "from":"August 15, 2018 at 11:00:00 AM UTC+2",
+            "to":"August 15, 2018 at 14:00:00 AM UTC+2",
+            "userName":"mrX",
+            "userDocId":"u333"
+        }
+    }
+}
