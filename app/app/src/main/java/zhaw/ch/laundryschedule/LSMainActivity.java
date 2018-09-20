@@ -1,11 +1,13 @@
 package zhaw.ch.laundryschedule;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +29,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +41,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
 import zhaw.ch.laundryschedule.machines.MachineListFragment;
@@ -53,13 +62,16 @@ public class LSMainActivity extends AppCompatActivity
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentTransaction fragmentTransaction;
     private FirebaseAuth mAuth;
-    private ImageView profilePicture;
+    private ImageView profilePhoto;
     private TextView userName;
     private TextView userEmail;
 
-    private String picturePath;
-    private Uri mFileUri = null;
+
+    private String imageFilePath;
+    private Uri photoURI;
+    private URI mFileUri = null;
     private Uri mDownloadUrl = null;
+    private File photoFile;
 
 
     @Override
@@ -74,9 +86,7 @@ public class LSMainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         userEmail = headerView.findViewById(R.id.user_email);
         userName = headerView.findViewById(R.id.user_name);
-        profilePicture = headerView.findViewById(R.id.profile_picture);
-
-
+        profilePhoto = headerView.findViewById(R.id.profile_photo);
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -101,7 +111,7 @@ public class LSMainActivity extends AppCompatActivity
         setFragment(intent.getIntExtra("menuId", R.id.nav_reservation));
     }
 
-    private void setProfilePicture() {
+    private void setProfilePhoto() {
     }
 
     @Override
@@ -111,11 +121,11 @@ public class LSMainActivity extends AppCompatActivity
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             updateUI(currentUser);
-            profilePicture.setOnClickListener(new View.OnClickListener() {
+            profilePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "launchCamera");
-                    dispatchTakePictureIntent();
+                    dispatchTakePhotoIntent();
                 }
             });
         } else {
@@ -123,82 +133,97 @@ public class LSMainActivity extends AppCompatActivity
         }
     }
 
+    private File createImageFile() throws IOException {
+        String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss",
+                        Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir =
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        imageFilePath = image.getAbsolutePath();
+        return image;
+    }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    private void dispatchTakePhotoIntent() {
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.d(TAG, "dispatchTakePhotoIntent: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+
+            photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", photoFile);
+            Log.d(TAG, "dispatchTakePhotoIntent: " + photoURI.toString());
+            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    photoURI);
+            startActivityForResult(takePhotoIntent,
+                    REQUEST_IMAGE_CAPTURE);
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                profilePicture.setImageBitmap(imageBitmap);
-
-                mFileUri = data.getData();
-
-                if (mFileUri != null) {
-                    uploadFromUri(mFileUri);
-                } else {
-                    Log.w(TAG, "File URI is null");
-                }
+                Log.d(TAG, "onActivityResult: ");
+                Glide.with(this)
+                        .load(photoURI)
+                        .apply(RequestOptions.circleCropTransform())
+                        .apply(new RequestOptions().override(192))
+                        .into(profilePhoto);
+                uploadFromUri();
             }
         }
 
-
     }
 
-    private void uploadFromUri(Uri fileUri) {
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
-        // Save the File URI
-        mFileUri = fileUri;
-
-        // Clear the last download, if any
-        updateUI(mAuth.getCurrentUser());
-        mDownloadUrl = null;
-
-        // Start MyUploadService to upload the file, so that the file is uploaded
-        // even if this Activity is killed or put in the background
-        startService(new Intent(this, UploadService.class)
-                .putExtra(UploadService.EXTRA_FILE_URI, fileUri)
-                .setAction(UploadService.ACTION_UPLOAD));
-
-        // Show loading spinner
-
+    private void uploadFromUri() {
+        Intent intent = new Intent(LSMainActivity.this, UploadService.class)
+                .putExtra(UploadService.EXTRA_FILE_URI, photoURI)
+                .setAction(UploadService.ACTION_UPLOAD)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        startService(intent);
     }
 
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
-            Log.d(TAG, "updateUI: "+ currentUser.getEmail()+" currentemail "+userEmail.getText());
+            Log.d(TAG, "updateUI: " + currentUser.getEmail() + " currentemail " + userEmail.getText());
             if (currentUser.getEmail() != null) {
                 userEmail.setText(currentUser.getEmail());
             }
-            if (currentUser.getDisplayName() != null){
+            if (currentUser.getDisplayName() != null) {
                 userName.setText(currentUser.getDisplayName());
             }
             if (currentUser.getPhotoUrl() != null && !currentUser.getPhotoUrl().toString().isEmpty()) {
-                StorageReference profilePictureReference = FirebaseStorage.getInstance().getReferenceFromUrl(currentUser.getPhotoUrl().toString());
+                StorageReference profilePhotoReference = FirebaseStorage.getInstance().getReferenceFromUrl(currentUser.getPhotoUrl().toString());
 
 
                 File localFile = null;
                 try {
-                    localFile = File.createTempFile("profilePictures", "jpg");
-                    picturePath = localFile.getPath();
+                    localFile = File.createTempFile("profilePhotos", "jpg");
+                    imageFilePath = localFile.getPath();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                profilePictureReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                profilePhotoReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap myBitmap = BitmapFactory.decodeFile(picturePath);
-                        profilePicture.setImageBitmap(myBitmap);
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imageFilePath);
+                        profilePhoto.setImageBitmap(myBitmap);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
