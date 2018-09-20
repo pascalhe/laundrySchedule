@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.crypto.Mac;
+
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
@@ -187,7 +189,8 @@ public class ReservationActivity extends AppCompatActivity {
             return new Reservation(
                     from,
                     to,
-                    ""
+                    "0ea161dcf5c846e293f57ae4",
+                    MachineSpinner.getMachineReference()
             );
         } catch (ParseException e) {
             e.printStackTrace();

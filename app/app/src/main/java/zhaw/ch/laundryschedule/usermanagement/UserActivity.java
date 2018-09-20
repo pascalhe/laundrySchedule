@@ -194,7 +194,6 @@ public class UserActivity extends AppCompatActivity {
                             Snackbar.make(getCurrentFocus(), "Failed: " + task.getException().getMessage(), Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         }
-
                     }
                 });
     }

@@ -7,18 +7,25 @@ public class Reservation extends AbstractBaseModel {
     private Date from;
     private Date to;
     private String userDocId;
+    private String waschingMachineDocId;
 
-    public Reservation(int id, Date from, Date to, String userDocId){
+    public Reservation(){
+        super();
+    }
+
+    public Reservation(int id, Date from, Date to, String userDocId, String waschingMachineDocId){
         super();
         this.from = from;
         this.to = to;
         this.userDocId = userDocId;
+        this.waschingMachineDocId = waschingMachineDocId;
     }
 
-    public Reservation(Date from, Date to, String userDocId){
+    public Reservation(Date from, Date to, String userDocId, String waschingMachineDocId){
         this.from = from;
         this.to = to;
         this.userDocId = userDocId;
+        this.waschingMachineDocId = waschingMachineDocId;
     }
 
     public Date getFrom() {
@@ -43,5 +50,13 @@ public class Reservation extends AbstractBaseModel {
 
     public void setUserDocId(String userDocId){
         this.userDocId = userDocId;
+    }
+
+    public void setWaschingMachineDocId(String waschingMachineDocId){
+        this.waschingMachineDocId = waschingMachineDocId;
+    }
+
+    public String getWaschingMachineDocId(){
+        return waschingMachineDocId;
     }
 }
