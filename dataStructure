@@ -1,0 +1,79 @@
+{  
+    "users":{  
+        "uu1111":{  
+            "firstName":"Max",
+            "lastName":"Power",
+            "username":"maxpow",
+            "email":"maxpow@gmail.com",
+            "location":{  
+
+            },
+            "locationDocId":"loc1111"
+        },
+        "uu2222":{  
+            "firstName":"Heidi",
+            "lastName":"Peter",
+            "username":"heipe",
+            "email":"heidipeter@gmail.com",
+            "location":{  
+
+            },
+            "locationDocId":"loc1111"
+        },
+        "uu3333":{  
+            "firstName":"Mr",
+            "lastName":"X",
+            "username":"mrX",
+            "email":"mrx@gmail.com",
+            "location":{  
+
+            },
+            "locationDocId":"loc222"
+        }
+    },
+    "locations": {
+        "loc1111": {
+            "street": "Nussbaumstrasse",
+            "streetNumber": "11",
+            "zipCode": "8003",
+            "city": "Zürich",
+            "country": "Schweiz"
+        },
+        "loc222": {
+            "street": "Spinnereiplatz",
+            "streetNumber": "1",
+            "zipCode": "8041",
+            "city": "Zürich",
+            "country": "Schweiz"
+        }
+    },
+    "machines": {
+        "mch111": {
+            "name": "V-Zug 21323",
+            "capacity": "15kg",
+            "locationDocId" "loc111"
+        },
+        "mch111": {
+            "name": "Sibir",
+            "capacity": "12kg",
+            "locationDocId" "loc222"
+        }
+    },
+    
+    
+    "userReservations": {
+        "u111": {
+            "-KAB6ygHkvPkUiZn7CHT": {
+                "from": August 18, 2018 at 11:00:00 AM UTC+2,
+                "to": August 18, 2018 at 14:00:00 AM UTC+2,
+                "waschingMachineName": "V-Zug 21323"
+                "waschingMachineDocId": "mch111"
+            },
+                        "-KAB6ygHkvPkUiZn7CHT": {
+                "from": August 18, 2018 at 11:00:00 AM UTC+2,
+                "to": August 18, 2018 at 14:00:00 AM UTC+2,
+                "waschingMachineName": "V-Zug 21323"
+                "waschingMachineDocId": "mch111"
+            }
+      },
+ 
