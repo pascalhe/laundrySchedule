@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import zhaw.ch.laundryschedule.R;
+import zhaw.ch.laundryschedule.machines.MachineList;
 import zhaw.ch.laundryschedule.models.Reservation;
+import zhaw.ch.laundryschedule.usermanagement.UserAtLocation;
 
 public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<ReservationRecyclerViewAdapter.ReservationViewHolder>{
 
@@ -34,9 +38,13 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
     public void onBindViewHolder(@NonNull ReservationViewHolder reservationViewHolder, int i) {
         SimpleDateFormat fDate = new SimpleDateFormat("dd.MM.yyyy");
         SimpleDateFormat fTime = new SimpleDateFormat("HH:mm");
+        String machineDocKey = reservationList.get(i).getWashingMachineDocId();
+        String userDocKey = reservationList.get(i).getUserDocId();
 
         reservationViewHolder.date.setText(fDate.format(reservationList.get(i).getFrom()));
         reservationViewHolder.from.setText(fTime.format(reservationList.get(i).getFrom()) + " - " + fTime.format(reservationList.get(i).getTo()));
+        reservationViewHolder.machine.setText(MachineList.getInstance().getMachine(machineDocKey).getName());
+        reservationViewHolder.user.setText(UserAtLocation.getInstance().getUser(userDocKey).getFirstName());
     }
 
     @Override
@@ -53,6 +61,8 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
         CardView reservationCard;
         TextView date;
         TextView from;
+        TextView machine;
+        TextView user;
 
         ReservationViewHolder(View itemView) {
             super(itemView);
@@ -60,6 +70,8 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
             reservationCard = (CardView)itemView.findViewById(R.id.reservation_card_view);
             date = (TextView)itemView.findViewById(R.id.reservation_card_date);
             from = (TextView)itemView.findViewById(R.id.reservation_card_time);
+            machine = (TextView)itemView.findViewById(R.id.reservation_card_machine);
+            user = (TextView)itemView.findViewById(R.id.reservation_card_user);
         }
     }
 

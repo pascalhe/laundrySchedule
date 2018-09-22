@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -23,7 +24,9 @@ import java.util.List;
 
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.machines.MachineList;
 import zhaw.ch.laundryschedule.models.Reservation;
+import zhaw.ch.laundryschedule.models.WashingMachine;
 
 public class ReservationListFragment extends Fragment {
 
@@ -52,34 +55,37 @@ public class ReservationListFragment extends Fragment {
             }
         });
 
-        // Get all users end send it to the listview
-        Firestore.getInstance().collection("reservations")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                final Reservation reservation = document.toObject(Reservation.class);
-                                reservation.setDocumentKey(document.getId());
-                                reservationList.add(reservation);
-                            }
-                            Context ctx = getActivity().getApplicationContext();
+        // Get only reservations from current user location
+        CollectionReference citiesRef = Firestore.getInstance().collection("reservations");
+        //for (WashingMachine machine : MachineList.getInstance().getMachineList()){
+        //    citiesRef.whereEqualTo("washingMachineDocId", machine.getDocumentKey());
+        //}
 
-                            RecyclerView rv = (RecyclerView)getView().findViewById(R.id.reservation_recycler_view);
-
-                            rv.setHasFixedSize(true);
-
-                            LinearLayoutManager llm = new LinearLayoutManager(ctx);
-                            rv.setLayoutManager(llm);
-
-                            ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservationList);
-                            rv.setAdapter(adapter);
-                        } else {
-                            Log.w("Error", "Error getting documents.", task.getException());
-                        }
+        citiesRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        final Reservation reservation = document.toObject(Reservation.class);
+                        reservation.setDocumentKey(document.getId());
+                        reservationList.add(reservation);
                     }
-                });
+                    Context ctx = getActivity().getApplicationContext();
+
+                    RecyclerView rv = (RecyclerView)getView().findViewById(R.id.reservation_recycler_view);
+
+                    rv.setHasFixedSize(true);
+
+                    LinearLayoutManager llm = new LinearLayoutManager(ctx);
+                    rv.setLayoutManager(llm);
+
+                    ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservationList);
+                    rv.setAdapter(adapter);
+                } else {
+                    Log.w("Error", "Error getting documents.", task.getException());
+                }
+            }
+        });
 
         return rootV;
     }
