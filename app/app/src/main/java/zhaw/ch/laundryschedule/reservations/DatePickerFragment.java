@@ -31,7 +31,7 @@ public class DatePickerFragment extends DialogFragment
             return;
 
         String yearString = Integer.toString(year);
-        String monthString = Integer.toString(month);
+        String monthString = Integer.toString(month + 1);
         String dayString = Integer.toString(day);
 
         if(monthString.length() == 1) monthString = "0" + monthString;

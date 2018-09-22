@@ -25,12 +25,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.crypto.Mac;
+
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.machines.MachineSpinner;
 import zhaw.ch.laundryschedule.models.Reservation;
+import zhaw.ch.laundryschedule.models.User;
 import zhaw.ch.laundryschedule.models.WashingMachine;
+import zhaw.ch.laundryschedule.usermanagement.CurrentUser;
 
 public class ReservationActivity extends AppCompatActivity {
 
@@ -77,12 +81,12 @@ public class ReservationActivity extends AppCompatActivity {
                     Reservation reservation = documentSnapshot.toObject(Reservation.class);
                     if (reservation != null){
                         setReservationInForm(reservation);
-                        MachineSpinner.setMachineSpinner((Spinner) findViewById(R.id.washingMachineId), null, ReservationActivity.this);
+                        MachineSpinner.setMachineSpinnerByLocation((Spinner) findViewById(R.id.washingMachineId), null, CurrentUser.getInstance().getUser().getLocationDocId(),ReservationActivity.this);
                     }
                 }
             });
         } else {
-            MachineSpinner.setMachineSpinner((Spinner) findViewById(R.id.washingMachineId), null, ReservationActivity.this);
+            MachineSpinner.setMachineSpinnerByLocation((Spinner) findViewById(R.id.washingMachineId), null, CurrentUser.getInstance().getUser().getLocationDocId(),ReservationActivity.this);
         }
 
         // Date picker
@@ -184,10 +188,13 @@ public class ReservationActivity extends AppCompatActivity {
             to.setHours(timeTo.getHours());
             to.setMinutes(timeTo.getMinutes());
 
+            User user = CurrentUser.getInstance().getUser();
+
             return new Reservation(
                     from,
                     to,
-                    ""
+                    CurrentUser.getInstance().getUser().getDocumentKey(),
+                    MachineSpinner.getMachineReference()
             );
         } catch (ParseException e) {
             e.printStackTrace();

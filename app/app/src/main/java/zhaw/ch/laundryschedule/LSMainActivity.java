@@ -33,6 +33,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -44,11 +46,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
+import zhaw.ch.laundryschedule.machines.MachineList;
 import zhaw.ch.laundryschedule.machines.MachineListFragment;
+import zhaw.ch.laundryschedule.models.User;
 import zhaw.ch.laundryschedule.reservations.ReservationListFragment;
 import zhaw.ch.laundryschedule.service.UploadService;
+import zhaw.ch.laundryschedule.usermanagement.CurrentUser;
 import zhaw.ch.laundryschedule.usermanagement.LoginFragment;
+import zhaw.ch.laundryschedule.usermanagement.UserAtLocation;
 import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
 public class LSMainActivity extends AppCompatActivity
@@ -86,7 +93,6 @@ public class LSMainActivity extends AppCompatActivity
         userName = headerView.findViewById(R.id.user_name);
         profilePhoto = headerView.findViewById(R.id.profile_photo);
 
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +112,7 @@ public class LSMainActivity extends AppCompatActivity
 
         // Check intent
         Intent intent = getIntent();
-        setFragment(intent.getIntExtra("menuId", R.id.nav_reservation));
+        setFragment(intent.getIntExtra("menuId", R.id.nav_login));
     }
 
     private void setProfilePhoto() {
@@ -118,6 +124,21 @@ public class LSMainActivity extends AppCompatActivity
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+
+            DocumentReference docRef = Firestore.getInstance().collection("users").document(currentUser.getUid());
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User user = documentSnapshot.toObject(User.class);
+                    if (user != null) {
+                        user.setDocumentKey(documentSnapshot.getId());
+                        CurrentUser.createInstance(user);
+                        UserAtLocation.createInstance(user.getLocationDocId());
+                        MachineList.createInstance(user.getLocationDocId());
+                    }
+                }
+            });
+
             updateUI(currentUser);
             profilePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,7 +148,7 @@ public class LSMainActivity extends AppCompatActivity
                 }
             });
         } else {
-            //setFragment(R.id.nav_login);
+            setFragment(R.id.nav_login);
         }
     }
 
