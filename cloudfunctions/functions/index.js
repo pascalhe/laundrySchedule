@@ -14,7 +14,6 @@ admin.initializeApp();
 exports.createUser = functions.firestore
     .document('users/{userId}')
     .onCreate((snap, context) => {
-      const promises=[];
       const user = snap.data();
       var userObject = {
           uid: snap.id,
@@ -32,4 +31,26 @@ exports.createUser = functions.firestore
         .catch(function(error) {
           console.log("Error creating new user:", error);
         });
+    });
+
+exports.updateUser = functions.firestore
+    .document('users/{userId}')
+    .onUpdate((change, context) => {
+      const newValue = change.after.data();
+      const previousValue = change.before.data();
+      const uid = change.before.id;
+
+      if (previousValue.userName != newValue.userName){
+        return admin.auth().updateUser(uid, {
+          displayName: newValue.userName
+        })
+          .then(function(userRecord) {
+            // See the UserRecord reference doc for the contents of userRecord.
+            console.log("Successfully updated user", userRecord.toJSON());
+          })
+          .catch(function(error) {
+            console.log("Error updating user:", error);
+          });
+     }
+      return null;
     });

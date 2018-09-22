@@ -5,6 +5,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.util.ProgressView;
 
@@ -214,6 +216,9 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
                             FirebaseUser user = mAuth.getCurrentUser();
                             Snackbar.make(getView(), "Login successful. " , Snackbar.LENGTH_SHORT)
                                     .setAction("Action", null).show();
+                            Intent lSMainActivityIntent = new Intent(getContext(), LSMainActivity.class);
+                            lSMainActivityIntent.putExtra("menuId", R.id.nav_reservation);
+                            startActivity(lSMainActivityIntent);
                         } else {
                             // If sign in fails, display a message to the user.
                             showProgress(false);

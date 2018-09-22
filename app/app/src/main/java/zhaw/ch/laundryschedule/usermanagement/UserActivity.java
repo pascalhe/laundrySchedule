@@ -144,40 +144,10 @@ public class UserActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user create user attempt.
             showProgress(true);
-            // If documentKey empty, create a new user
-            if (documentKey == null || documentKey.isEmpty()) {
-                writeUserToDb(user);
-                //createUser(email, password, user);
-            } else {
-                writeUserToDb(user);
-            }
-
+            // create or update user
+            writeUserToDb(user);
         }
     }
-
-
-    private void createUser(String email, String password, final User user) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            documentKey = task.getResult().getUser().getUid();
-                            Log.d(TAG, "onComplete: documentKey " + documentKey);
-                            Log.d(TAG, "onComplete: currentUser "+mAuth.getCurrentUser().getUid());
-                            writeUserToDb(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Snackbar.make(getCurrentFocus(), "Failed: " + task.getException().getMessage(), Snackbar.LENGTH_LONG)
-//                                    .setAction("Action", null).show();
-                        }
-                    }
-                });
-    }
-
 
     private void writeUserToDb(User user) {
         Log.d(TAG, "writeUserToDb: " +documentKey+ user.toString());
@@ -202,12 +172,12 @@ public class UserActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void startIntent(){
         Intent lSMainActivityIntent = new Intent(getBaseContext(), LSMainActivity.class);
         lSMainActivityIntent.putExtra("menuId",R.id.nav_usermanagement);
         startActivity(lSMainActivityIntent);
     }
-
 
     private void showProgress(Boolean show) {
         ProgressView.show(show, formView, progressView, getBaseContext());
@@ -215,8 +185,6 @@ public class UserActivity extends AppCompatActivity {
 
     /**
      * Mapped a user object in the form
-     *
-     * @param user
      */
     private void setUserInForm(User user) {
         firstNameEditText.setText(user.getFirstName());
