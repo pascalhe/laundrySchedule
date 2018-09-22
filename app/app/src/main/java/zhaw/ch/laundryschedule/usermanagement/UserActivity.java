@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
@@ -145,7 +146,8 @@ public class UserActivity extends AppCompatActivity {
             showProgress(true);
             // If documentKey empty, create a new user
             if (documentKey == null || documentKey.isEmpty()) {
-                createUser(email, password, user);
+                writeUserToDb(user);
+                //createUser(email, password, user);
             } else {
                 writeUserToDb(user);
             }
@@ -179,6 +181,8 @@ public class UserActivity extends AppCompatActivity {
 
     private void writeUserToDb(User user) {
         Log.d(TAG, "writeUserToDb: " +documentKey+ user.toString());
+        if (documentKey == null || documentKey.isEmpty())
+            documentKey = UUID.randomUUID().toString().replace("-", "");
 
         Firestore.getInstance().collection("users").document(documentKey).set(user)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
