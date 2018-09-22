@@ -214,9 +214,6 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
                             FirebaseUser user = mAuth.getCurrentUser();
                             Snackbar.make(getView(), "Login successful. " , Snackbar.LENGTH_SHORT)
                                     .setAction("Action", null).show();
-                            //updateUI(user);
-
-
                         } else {
                             // If sign in fails, display a message to the user.
                             showProgress(false);
@@ -224,13 +221,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
 
                             Snackbar.make(getView(), "Authentication failed. " + task.getException().getMessage(), Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
-
-                            //    updateUI(null);
-
-
                         }
-
-                        // ...
                     }
                 });
     }
