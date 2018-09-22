@@ -52,11 +52,11 @@ public class Reservation extends AbstractBaseModel {
         this.userDocId = userDocId;
     }
 
-    public void setWaschingMachineDocId(String waschingMachineDocId){
-        this.waschingMachineDocId = waschingMachineDocId;
+    public void setWashingMachineDocId(String washingMachineDocId){
+        this.waschingMachineDocId = washingMachineDocId;
     }
 
-    public String getWaschingMachineDocId(){
+    public String getWashingMachineDocId(){
         return waschingMachineDocId;
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import zhaw.ch.laundryschedule.R;
@@ -31,8 +32,11 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
 
     @Override
     public void onBindViewHolder(@NonNull ReservationViewHolder reservationViewHolder, int i) {
-        reservationViewHolder.from.setText(reservationList.get(i).getFrom().toString());
-        reservationViewHolder.to.setText(reservationList.get(i).getTo().toString());
+        SimpleDateFormat fDate = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat fTime = new SimpleDateFormat("HH:mm");
+
+        reservationViewHolder.date.setText(fDate.format(reservationList.get(i).getFrom()));
+        reservationViewHolder.from.setText(fTime.format(reservationList.get(i).getFrom()) + " - " + fTime.format(reservationList.get(i).getTo()));
     }
 
     @Override
@@ -47,14 +51,15 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
 
     public static class ReservationViewHolder extends RecyclerView.ViewHolder {
         CardView reservationCard;
+        TextView date;
         TextView from;
-        TextView to;
 
         ReservationViewHolder(View itemView) {
             super(itemView);
+
             reservationCard = (CardView)itemView.findViewById(R.id.reservation_card_view);
-            from = (TextView)itemView.findViewById(R.id.reservation_card_from);
-            to = (TextView)itemView.findViewById(R.id.reservation_card_to);
+            date = (TextView)itemView.findViewById(R.id.reservation_card_date);
+            from = (TextView)itemView.findViewById(R.id.reservation_card_time);
         }
     }
 
