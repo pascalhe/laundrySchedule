@@ -28,7 +28,10 @@ public class MachineList {
     }
 
     public static void createInstance(String locationDocId){
-        instance = new MachineList(locationDocId);
+        if(instance == null)
+            instance = new MachineList(locationDocId);
+        else
+            instance.setMachineList(locationDocId);
     }
 
     private MachineList(String locationDocId){

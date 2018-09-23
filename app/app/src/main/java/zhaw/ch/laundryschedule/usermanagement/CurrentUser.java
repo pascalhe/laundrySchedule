@@ -16,7 +16,10 @@ public class CurrentUser {
     }
 
     public static void createInstance(User user){
-        instance = new CurrentUser(user);
+        if(instance == null)
+            instance = new CurrentUser(user);
+        else
+            instance.user = user;
     }
 
     public static CurrentUser getInstance(){

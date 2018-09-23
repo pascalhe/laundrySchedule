@@ -10,8 +10,8 @@
         android:layout_margin="8dp"
         card_view:cardCornerRadius="0dp"
         android:elevation="3dp"
-
         android:id="@+id/reservation_card_view">
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -19,22 +19,32 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/textViewOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="&#8942;"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+            <TextView
                 android:id="@+id/reservation_card_date"
                 android:text="Date"
-                android:layout_width="100dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/reservation_card_time"
                 android:text="From"
-                android:layout_width="120dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/reservation_card_date"/>
 
             <TextView
                 android:id="@+id/reservation_card_machine"
                 android:text="Machine"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/reservation_card_time"
                 android:layout_alignParentLeft="true"/>
@@ -42,7 +52,7 @@
             <TextView
                 android:id="@+id/reservation_card_user"
                 android:text="User"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/reservation_card_time"
                 android:layout_toRightOf="@id/reservation_card_machine"

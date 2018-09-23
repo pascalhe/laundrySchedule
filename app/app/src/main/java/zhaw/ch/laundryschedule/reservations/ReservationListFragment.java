@@ -17,9 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import zhaw.ch.laundryschedule.R;
@@ -56,19 +58,21 @@ public class ReservationListFragment extends Fragment {
         });
 
         // Get only reservations from current user location
-        CollectionReference citiesRef = Firestore.getInstance().collection("reservations");
-        //for (WashingMachine machine : MachineList.getInstance().getMachineList()){
-        //    citiesRef.whereEqualTo("washingMachineDocId", machine.getDocumentKey());
-        //}
+        CollectionReference reservationRef = Firestore.getInstance().collection("reservations");
+        Query query = reservationRef.whereGreaterThan("from", new Date()).orderBy("from");
 
-        citiesRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         final Reservation reservation = document.toObject(Reservation.class);
-                        reservation.setDocumentKey(document.getId());
-                        reservationList.add(reservation);
+
+                        if(MachineList.getInstance().getMachine(reservation.getWashingMachineDocId()) != null){
+                            reservation.setDocumentKey(document.getId());
+                            reservationList.add(reservation);
+                        }
+
                     }
                     Context ctx = getActivity().getApplicationContext();
 
@@ -79,9 +83,9 @@ public class ReservationListFragment extends Fragment {
                     LinearLayoutManager llm = new LinearLayoutManager(ctx);
                     rv.setLayoutManager(llm);
 
-                    ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservationList);
+                    ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservationList, ctx);
                     rv.setAdapter(adapter);
-                } else {
+                    } else {
                     Log.w("Error", "Error getting documents.", task.getException());
                 }
             }

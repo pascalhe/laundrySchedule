@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -150,7 +151,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void writeUserToDb(User user) {
-        Log.d(TAG, "writeUserToDb: " +documentKey+ user.toString());
+
         if (documentKey == null || documentKey.isEmpty())
             documentKey = UUID.randomUUID().toString().replace("-", "");
 

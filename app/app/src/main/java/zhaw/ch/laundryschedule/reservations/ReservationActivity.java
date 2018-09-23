@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -67,27 +68,7 @@ public class ReservationActivity extends AppCompatActivity {
             }
         });
 
-        // Check intent
-        Intent reservationIntent = getIntent();
-        if (reservationIntent.hasExtra("documentKey")) {
-            // Override button text from add to update
-            saveReservationButton.setText("Update User");
-
-            documentKey = reservationIntent.getStringExtra("documentKey");
-            DocumentReference docRef = Firestore.getInstance().collection("reservations").document(documentKey);
-            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Reservation reservation = documentSnapshot.toObject(Reservation.class);
-                    if (reservation != null){
-                        setReservationInForm(reservation);
-                        MachineSpinner.setMachineSpinnerByLocation((Spinner) findViewById(R.id.washingMachineId), null, CurrentUser.getInstance().getUser().getLocationDocId(),ReservationActivity.this);
-                    }
-                }
-            });
-        } else {
-            MachineSpinner.setMachineSpinnerByLocation((Spinner) findViewById(R.id.washingMachineId), null, CurrentUser.getInstance().getUser().getLocationDocId(),ReservationActivity.this);
-        }
+        MachineSpinner.setMachineSpinnerByLocation((Spinner) findViewById(R.id.washingMachineId), null, CurrentUser.getInstance().getUser().getLocationDocId(),ReservationActivity.this);
 
         // Date picker
         reservationDateFrom.setClickable(true);
@@ -129,6 +110,12 @@ public class ReservationActivity extends AppCompatActivity {
     private void saveReservation() {
         Reservation reservation = getReservationFromForm();
 
+        if(reservation == null){
+            Toast toast = Toast.makeText(getBaseContext(), "Check input", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
         // If documentKey empty, generate a new key
         if (documentKey == null || documentKey.isEmpty())
             documentKey = UUID.randomUUID().toString().replace("-", "");
@@ -137,27 +124,6 @@ public class ReservationActivity extends AppCompatActivity {
         Intent lSMainActivityIntent = new Intent(getBaseContext(), LSMainActivity.class);
         lSMainActivityIntent.putExtra("menuId", R.id.nav_reservation);
         startActivity(lSMainActivityIntent);
-    }
-
-    /**
-     * Mapped a reservation object in the form
-     *
-     * @param reservation
-     */
-    private void setReservationInForm(Reservation reservation) {
-        /*
-        reservationDateFrom.updateDate(reservation.getFrom().getYear(),
-                reservation.getFrom().getMonth(),
-                reservation.getFrom().getDay());
-        reservationTimeFrom.setHour(reservation.getFrom().getHours());
-        reservationTimeFrom.setMinute(reservation.getFrom().getMinutes());
-
-        reservationDateTo.updateDate(reservation.getTo().getYear(),
-                reservation.getTo().getMonth(),
-                reservation.getTo().getDay());
-        reservationTimeTo.setHour(reservation.getTo().getHours());
-        reservationTimeTo.setMinute(reservation.getTo().getMinutes());
-        */
     }
 
     /**
