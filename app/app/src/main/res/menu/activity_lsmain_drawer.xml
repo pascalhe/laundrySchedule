@@ -7,35 +7,31 @@
         <item
             android:id="@+id/nav_reservation"
             android:icon="@drawable/ic_menu_reservation"
-            android:title="Reservations" />
+            android:title="@string/reservations" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_timer"
+            android:icon="@drawable/ic_timer_black_24dp"
+            android:title="@string/timer" />
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/ic_menu_login"
-            android:title="Login" />
+            android:title="@string/login" />
     </group>
 
-    <item android:title="Management">
+    <item android:title="@string/management">
         <menu>
             <item
                 android:id="@+id/nav_usermanagement"
                 android:icon="@drawable/ic_menu_account"
-                android:title="Users" />
+                android:title="@string/users" />
             <item
                 android:id="@+id/nav_washing_machines"
                 android:icon="@drawable/ic_menu_washing_machine"
-                android:title="Washing machines" />
+                android:title="@string/washing_machines" />
             <item
                 android:id="@+id/nav_locations"
                 android:icon="@drawable/ic_menu_location"
-                android:title="Locations" />
+                android:title="@string/locations" />
         </menu>
     </item>
 

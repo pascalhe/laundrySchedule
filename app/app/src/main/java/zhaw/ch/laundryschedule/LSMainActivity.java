@@ -10,7 +10,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -46,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import zhaw.ch.laundryschedule.timer.Timer;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.locations.LocationActivity;
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
@@ -321,8 +321,10 @@ public class LSMainActivity extends AppCompatActivity
                     }
                 });
                 break;
-            case R.id.nav_gallery:
-
+            case R.id.nav_timer:
+                Timer timer = Timer.newInstance();
+                fragmentTransaction.add(R.id.fragment_container, timer, "timer");
+                fab.hide();
                 break;
             case R.id.nav_login:
                 LoginFragment loginFragment = LoginFragment.newInstance();
