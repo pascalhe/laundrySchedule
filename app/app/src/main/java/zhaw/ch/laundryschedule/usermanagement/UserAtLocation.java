@@ -27,7 +27,10 @@ public class UserAtLocation {
     }
 
     public static void createInstance(String locationDocId){
-        instance = new UserAtLocation(locationDocId);
+        if(instance == null)
+            instance = new UserAtLocation(locationDocId);
+        else
+            instance.setUserListAtLocation(locationDocId);
     }
 
     private UserAtLocation(String locationDocId){
