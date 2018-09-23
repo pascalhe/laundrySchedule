@@ -47,14 +47,18 @@ import java.util.Date;
 import java.util.Locale;
 
 import zhaw.ch.laundryschedule.database.Firestore;
+import zhaw.ch.laundryschedule.locations.LocationActivity;
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
+import zhaw.ch.laundryschedule.machines.MachineActivity;
 import zhaw.ch.laundryschedule.machines.MachineList;
 import zhaw.ch.laundryschedule.machines.MachineListFragment;
 import zhaw.ch.laundryschedule.models.User;
+import zhaw.ch.laundryschedule.reservations.ReservationActivity;
 import zhaw.ch.laundryschedule.reservations.ReservationListFragment;
 import zhaw.ch.laundryschedule.service.UploadService;
 import zhaw.ch.laundryschedule.usermanagement.CurrentUser;
 import zhaw.ch.laundryschedule.usermanagement.LoginFragment;
+import zhaw.ch.laundryschedule.usermanagement.UserActivity;
 import zhaw.ch.laundryschedule.usermanagement.UserAtLocation;
 import zhaw.ch.laundryschedule.usermanagement.UserListFragment;
 
@@ -70,6 +74,7 @@ public class LSMainActivity extends AppCompatActivity
     private ImageView profilePhoto;
     private TextView userName;
     private TextView userEmail;
+    private FloatingActionButton fab;
 
 
     private String imageFilePath;
@@ -93,14 +98,11 @@ public class LSMainActivity extends AppCompatActivity
         userName = headerView.findViewById(R.id.user_name);
         profilePhoto = headerView.findViewById(R.id.profile_photo);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+
+        //Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        fab = findViewById(R.id.fab);
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -310,7 +312,14 @@ public class LSMainActivity extends AppCompatActivity
             case R.id.nav_reservation:
                 ReservationListFragment reservationListFragment = ReservationListFragment.newInstance();
                 fragmentTransaction.add(R.id.fragment_container, reservationListFragment, "reservation");
-
+                fab.show();
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getBaseContext(), ReservationActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.nav_gallery:
 
@@ -318,18 +327,43 @@ public class LSMainActivity extends AppCompatActivity
             case R.id.nav_login:
                 LoginFragment loginFragment = LoginFragment.newInstance();
                 fragmentTransaction.add(R.id.fragment_container, loginFragment, "login");
+                fab.hide();
                 break;
             case R.id.nav_usermanagement:
                 UserListFragment userListFragment = UserListFragment.newInstance();
                 fragmentTransaction.add(R.id.fragment_container, userListFragment, "user");
+                fab.show();
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getBaseContext(), UserActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.nav_washing_machines:
                 MachineListFragment machineListFragment = MachineListFragment.newInstance();
                 fragmentTransaction.add(R.id.fragment_container, machineListFragment, "machine");
+                fab.show();
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getBaseContext(), MachineActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.nav_locations:
                 LocationListFragment locationListFragment = LocationListFragment.newInstance();
                 fragmentTransaction.add(R.id.fragment_container, locationListFragment, "location");
+                fab.show();
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getBaseContext(), LocationActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
         }
         fragmentTransaction.commit();

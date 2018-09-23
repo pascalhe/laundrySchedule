@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,16 +43,6 @@ public class UserListFragment extends Fragment {
 
         // set the fragment layout.
         final View rootV = inflater.inflate(R.layout.content_user_list, container, false);
-
-        // Add user button
-        addUserButton = (Button)rootV.findViewById(R.id.addUserButton);
-        addUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), UserActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // Get all users end send it to the listview
         Firestore.getInstance().collection("users")

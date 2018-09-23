@@ -45,16 +45,6 @@ public class MachineListFragment extends Fragment {
         // set the fragment layout.
         View rootV = inflater.inflate(R.layout.content_machine_list, container, false);
 
-        // Add user button
-        addMachineButton = (Button) rootV.findViewById(R.id.addMachineButton);
-        addMachineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), MachineActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // Get all users end send it to the listview
         Firestore.getInstance().collection("machines")
                 .get()

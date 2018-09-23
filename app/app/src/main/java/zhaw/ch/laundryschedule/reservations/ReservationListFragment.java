@@ -47,16 +47,6 @@ public class ReservationListFragment extends Fragment {
         // set the fragment layout.
         View rootV = inflater.inflate(R.layout.content_reservation_list, container, false);
 
-        // Add add reservation button
-        addReservation = (Button) rootV.findViewById(R.id.addReservationButton);
-        addReservation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), ReservationActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // Get only reservations from current user location
         CollectionReference reservationRef = Firestore.getInstance().collection("reservations");
         Query query = reservationRef.whereGreaterThan("from", new Date()).orderBy("from");

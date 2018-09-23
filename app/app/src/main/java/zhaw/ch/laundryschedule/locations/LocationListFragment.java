@@ -41,16 +41,6 @@ public class LocationListFragment extends Fragment {
         // set the fragment layout.
         View rootV = inflater.inflate(R.layout.content_location_list, container, false);
 
-        // Add location button
-        addLocationButton = (Button) rootV.findViewById(R.id.addLocationButton);
-        addLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getBaseContext(), LocationActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // Get all users end send it to the listview
         Firestore.getInstance().collection("locations")
                 .get()
