@@ -1,6 +1,5 @@
 package zhaw.ch.laundryschedule.usermanagement;
 
-
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -68,7 +67,6 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -153,7 +151,6 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -289,7 +286,5 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
-
-
 }
 

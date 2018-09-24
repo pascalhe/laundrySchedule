@@ -27,6 +27,9 @@ import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.User;
 
+/**
+ * 
+ */
 public class UserListFragment extends Fragment {
 
     private List<User> userList = new ArrayList<>();
