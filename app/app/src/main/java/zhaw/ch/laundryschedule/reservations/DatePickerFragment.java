@@ -9,6 +9,9 @@ import android.widget.EditText;
 
 import java.util.Calendar;
 
+/**
+ * The class DatePickerFragment creates a date picker dialog for the reservation ui.
+ */
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
@@ -26,6 +29,13 @@ public class DatePickerFragment extends DialogFragment
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
+    /**
+     * sets the selected date in the text box
+     * @param view
+     * @param year
+     * @param month
+     * @param day
+     */
     public void onDateSet(DatePicker view, int year, int month, int day) {
         if(textbox == null)
             return;

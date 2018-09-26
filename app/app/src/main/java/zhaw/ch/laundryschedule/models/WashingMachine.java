@@ -1,5 +1,8 @@
 package zhaw.ch.laundryschedule.models;
 
+/**
+ * Represent a washing machine in the app
+ */
 public class WashingMachine extends AbstractMachine {
 
     public WashingMachine() {

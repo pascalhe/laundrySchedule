@@ -1,5 +1,8 @@
 package zhaw.ch.laundryschedule.models;
 
+/**
+ * Represent a a user in the app.
+ */
 public class User extends AbstractBaseModel {
     private String firstName;
     private String lastName;

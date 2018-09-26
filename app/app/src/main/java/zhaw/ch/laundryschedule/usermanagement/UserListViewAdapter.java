@@ -12,6 +12,9 @@ import java.util.List;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.models.User;
 
+/**
+ * Adapter class for the user list element
+ */
 public class UserListViewAdapter extends BaseAdapter{
 
     protected List<User> userList;

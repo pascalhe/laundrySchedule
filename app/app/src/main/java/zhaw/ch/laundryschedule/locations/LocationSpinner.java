@@ -18,6 +18,9 @@ import java.util.List;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.Location;
 
+/**
+ * The LocationSpinner class sets a spinner with all locations from the firestore db
+ */
 public class LocationSpinner {
 
     private static List<Location> locationList;

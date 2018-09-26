@@ -37,6 +37,10 @@ import zhaw.ch.laundryschedule.models.User;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 import zhaw.ch.laundryschedule.usermanagement.CurrentUser;
 
+/**
+ * The ReservationActivity class ist needed
+ * for create a new reservation
+ */
 public class ReservationActivity extends AppCompatActivity {
 
     private Button saveReservationButton;

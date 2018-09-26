@@ -16,6 +16,11 @@ import java.util.List;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
+/**
+ * Holds a list of washing machines from my location.
+ * The list will be loaded after a user login.
+ * The list is needed to display the washing machine on a reservations card
+ */
 public class MachineList {
 
     private static MachineList instance = null;

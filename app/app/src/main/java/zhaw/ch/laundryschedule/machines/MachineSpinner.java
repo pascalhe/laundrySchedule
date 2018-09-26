@@ -20,6 +20,10 @@ import java.util.List;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
+/**
+ * The MachineSpinner class sets a spinner with washing machines
+ * for a selected location.
+ */
 public class MachineSpinner {
     private static List<WashingMachine> machineList;
     private static SpinMachineAdapter spinMachineAdapter;
@@ -35,22 +39,6 @@ public class MachineSpinner {
             return docKey;
         else
             return null;
-    }
-
-    public static void setMachineSpinner(final Spinner spinner, final String machineDocId, final Context context){
-        machineList = new ArrayList<WashingMachine>();
-        Firestore.getInstance().collection("machines")
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        setMachineSpinner(task.getResult(), spinner, machineDocId, context);
-                    } else {
-                        Log.w("Error", "Error getting documents.", task.getException());
-                    }
-                }
-            });
     }
 
     public static void setMachineSpinnerByLocation(final Spinner spinner, final String machineDocId, final String locationDocId, final Context context){

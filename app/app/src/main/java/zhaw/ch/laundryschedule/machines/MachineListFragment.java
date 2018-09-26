@@ -26,7 +26,10 @@ import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.AbstractMachine;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
-
+/**
+ * Washing machine list fragment class. Reads all machines from firestore db.
+ * The list ist needed for the machine management in the app
+ */
 public class MachineListFragment extends Fragment {
 
 

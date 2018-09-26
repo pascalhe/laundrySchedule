@@ -3,6 +3,9 @@ package zhaw.ch.laundryschedule.models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represent a location in the app
+ */
 public class Location extends AbstractBaseModel {
 
     private String street;

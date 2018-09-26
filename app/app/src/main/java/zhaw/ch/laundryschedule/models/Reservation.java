@@ -2,6 +2,9 @@ package zhaw.ch.laundryschedule.models;
 
 import java.util.Date;
 
+/**
+ * Represent a reservation in the app
+ */
 public class Reservation extends AbstractBaseModel {
 
     private Date from;

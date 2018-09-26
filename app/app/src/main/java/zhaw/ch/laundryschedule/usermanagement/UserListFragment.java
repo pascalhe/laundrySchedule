@@ -28,7 +28,8 @@ import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.User;
 
 /**
- * 
+ * User list fragment class. Reads all users from firestore db.
+ * The list ist needed for the usermanagement in the app
  */
 public class UserListFragment extends Fragment {
 
