@@ -12,6 +12,9 @@ import java.util.List;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.models.AbstractMachine;
 
+/**
+ * Adapter class for the washing machine list element
+ */
 public class MachineListViewAdapter extends BaseAdapter {
 
     protected List<AbstractMachine> machineList;

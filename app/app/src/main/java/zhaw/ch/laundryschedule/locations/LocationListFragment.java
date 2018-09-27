@@ -25,6 +25,10 @@ import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.Location;
 
+/**
+ * Location list fragment class. Reads all locations from firestore db.
+ * The list ist needed for the location management in the app
+ */
 public class LocationListFragment extends Fragment {
 
     private List<Location> locationList = new ArrayList<>();

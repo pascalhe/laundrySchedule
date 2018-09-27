@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
+/**
+ * Adapter class for the machine list element
+ */
 public class SpinMachineAdapter extends ArrayAdapter<WashingMachine> {
     private Context context;
     private WashingMachine[] values;

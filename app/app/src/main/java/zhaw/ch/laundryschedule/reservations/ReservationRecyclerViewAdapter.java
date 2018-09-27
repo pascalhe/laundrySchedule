@@ -28,6 +28,9 @@ import zhaw.ch.laundryschedule.models.Reservation;
 import zhaw.ch.laundryschedule.usermanagement.CurrentUser;
 import zhaw.ch.laundryschedule.usermanagement.UserAtLocation;
 
+/**
+ * Adapter class for the reservation lists. Sets reservationdata in a cardview
+ */
 public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<ReservationRecyclerViewAdapter.ReservationViewHolder>{
 
     private List<Reservation> reservationList;

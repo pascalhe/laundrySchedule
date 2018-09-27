@@ -1,16 +1,17 @@
 package zhaw.ch.laundryschedule.models;
 
+/**
+ * Represent a a user in the app.
+ */
 public class User extends AbstractBaseModel {
     private String firstName;
     private String lastName;
     private String email;
     private String userName;
-    private Location location;
     private String locationDocId;
 
     public User() {
         super();
-        location = new Location();
     }
 
     public User(String firstName, String lastName, String email, String userName, String locationDocId) {
@@ -52,14 +53,6 @@ public class User extends AbstractBaseModel {
 
     public void setUserName(String _userName) {
         userName = _userName;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location _location) {
-        location = _location;
     }
 
     public String getLocationDocId() {

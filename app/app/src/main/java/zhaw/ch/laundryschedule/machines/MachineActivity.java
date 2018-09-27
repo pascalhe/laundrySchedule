@@ -22,6 +22,10 @@ import zhaw.ch.laundryschedule.locations.LocationSpinner;
 import zhaw.ch.laundryschedule.models.AbstractMachine;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
+/**
+ * The MachineActivity class ist needed
+ * for create and update washing machines
+ */
 public class MachineActivity extends AppCompatActivity {
 
     private Button saveMachineButton;

@@ -3,6 +3,9 @@ package zhaw.ch.laundryschedule.models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represent a location in the app
+ */
 public class Location extends AbstractBaseModel {
 
     private String street;
@@ -10,11 +13,9 @@ public class Location extends AbstractBaseModel {
     private int zipCode;
     private String city;
     private String country;
-    private List<User> users;
 
     public Location() {
         super();
-        users = new ArrayList<>();
     }
 
     public Location(String _street, String _streetNumber, int _zipCode, String _city, String _country) {

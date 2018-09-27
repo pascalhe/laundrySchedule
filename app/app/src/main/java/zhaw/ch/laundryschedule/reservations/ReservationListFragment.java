@@ -30,6 +30,10 @@ import zhaw.ch.laundryschedule.machines.MachineList;
 import zhaw.ch.laundryschedule.models.Reservation;
 import zhaw.ch.laundryschedule.models.WashingMachine;
 
+/**
+ * Reservation list fragment class. Reads all reservations from users location.
+ * The list ist needed for the reservation list in the app
+ */
 public class ReservationListFragment extends Fragment {
 
     private List<Reservation> reservationList = new ArrayList<>();

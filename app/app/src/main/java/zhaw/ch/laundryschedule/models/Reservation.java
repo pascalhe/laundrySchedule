@@ -2,30 +2,33 @@ package zhaw.ch.laundryschedule.models;
 
 import java.util.Date;
 
+/**
+ * Represent a reservation in the app
+ */
 public class Reservation extends AbstractBaseModel {
 
     private Date from;
     private Date to;
     private String userDocId;
-    private String waschingMachineDocId;
+    private String washingMachineDocId;
 
     public Reservation(){
         super();
     }
 
-    public Reservation(int id, Date from, Date to, String userDocId, String waschingMachineDocId){
+    public Reservation(int id, Date from, Date to, String userDocId, String washingMachineDocId){
         super();
         this.from = from;
         this.to = to;
         this.userDocId = userDocId;
-        this.waschingMachineDocId = waschingMachineDocId;
+        this.washingMachineDocId = washingMachineDocId;
     }
 
-    public Reservation(Date from, Date to, String userDocId, String waschingMachineDocId){
+    public Reservation(Date from, Date to, String userDocId, String washingMachineDocId){
         this.from = from;
         this.to = to;
         this.userDocId = userDocId;
-        this.waschingMachineDocId = waschingMachineDocId;
+        this.washingMachineDocId = washingMachineDocId;
     }
 
     public Date getFrom() {
@@ -53,10 +56,10 @@ public class Reservation extends AbstractBaseModel {
     }
 
     public void setWashingMachineDocId(String washingMachineDocId){
-        this.waschingMachineDocId = washingMachineDocId;
+        this.washingMachineDocId = washingMachineDocId;
     }
 
     public String getWashingMachineDocId(){
-        return waschingMachineDocId;
+        return washingMachineDocId;
     }
 }

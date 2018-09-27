@@ -10,6 +10,10 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+/**
+ * The class TimePickerFragment creates a time picker dialog for the reservation ui.
+ *
+ */
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private EditText textbox = null;
@@ -26,6 +30,12 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    /**
+     * sets the selected time in the text box
+     * @param view
+     * @param hourOfDay
+     * @param minute
+     */
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if(textbox == null)
             return;

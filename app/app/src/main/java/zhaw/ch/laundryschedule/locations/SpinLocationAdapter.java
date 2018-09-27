@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import zhaw.ch.laundryschedule.models.Location;
 
+/**
+ * Adapter class for the location list element
+ */
 public class SpinLocationAdapter extends ArrayAdapter<Location> {
 
     // Your sent context

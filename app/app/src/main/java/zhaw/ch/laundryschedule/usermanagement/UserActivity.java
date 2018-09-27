@@ -29,6 +29,10 @@ import zhaw.ch.laundryschedule.locations.LocationSpinner;
 import zhaw.ch.laundryschedule.models.User;
 import zhaw.ch.laundryschedule.util.ProgressView;
 
+/**
+ * The UserActivity class ist needed
+ * for create and update user
+ */
 public class UserActivity extends AppCompatActivity {
     private static final String TAG = "UserActivity";
 
@@ -140,6 +144,7 @@ public class UserActivity extends AppCompatActivity {
      * @param user User
      */
     private void writeUserToDb(User user) {
+
         if (documentKey == null || documentKey.isEmpty())
             documentKey = UUID.randomUUID().toString().replace("-", "");
 
@@ -163,9 +168,8 @@ public class UserActivity extends AppCompatActivity {
                 });
     }
 
-
     /**
-     * Starts Intent of LSMain Activity
+     * Intent to the userlist fragment
      */
     private void startIntent(){
         Intent lSMainActivityIntent = new Intent(getBaseContext(), LSMainActivity.class);

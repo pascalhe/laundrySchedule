@@ -12,6 +12,9 @@ import java.util.List;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.models.Location;
 
+/**
+ * Adapter class for the location list element
+ */
 public class LocationListViewAdapter extends BaseAdapter {
 
     private List<Location> locationList;

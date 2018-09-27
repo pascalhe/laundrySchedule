@@ -19,6 +19,10 @@ import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.models.Location;
 
+/**
+ * The LocationActivity class ist needed
+ * for create and update locations in the app
+ */
 public class LocationActivity extends AppCompatActivity {
 
     private Button saveLocationButton;
