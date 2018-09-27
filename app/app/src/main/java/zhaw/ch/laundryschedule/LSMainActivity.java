@@ -1,8 +1,9 @@
+/* code for image upload to firebase storage adapted from source com.google.firebase.quickstart.firebasestorage */
 package zhaw.ch.laundryschedule;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,10 +30,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.FileDownloadTask;
@@ -45,7 +50,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import zhaw.ch.laundryschedule.timer.Timer;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.locations.LocationActivity;
 import zhaw.ch.laundryschedule.locations.LocationListFragment;
@@ -56,6 +60,7 @@ import zhaw.ch.laundryschedule.models.User;
 import zhaw.ch.laundryschedule.reservations.ReservationActivity;
 import zhaw.ch.laundryschedule.reservations.ReservationListFragment;
 import zhaw.ch.laundryschedule.service.UploadService;
+import zhaw.ch.laundryschedule.timer.Timer;
 import zhaw.ch.laundryschedule.usermanagement.CurrentUser;
 import zhaw.ch.laundryschedule.usermanagement.LoginFragment;
 import zhaw.ch.laundryschedule.usermanagement.UserActivity;
@@ -76,11 +81,11 @@ public class LSMainActivity extends AppCompatActivity
     private TextView userEmail;
     private FloatingActionButton fab;
 
-
+    private BroadcastReceiver mBroadcastReceiver;
     private String imageFilePath;
     private Uri photoURI;
     private URI mFileUri = null;
-    private Uri mDownloadUrl = null;
+    private Uri mDownloadUrl;
     private File photoFile;
 
 
@@ -99,7 +104,6 @@ public class LSMainActivity extends AppCompatActivity
         profilePhoto = headerView.findViewById(R.id.profile_photo);
 
 
-
         //Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
         fab = findViewById(R.id.fab);
 
@@ -112,12 +116,43 @@ public class LSMainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        // BroadcastReceiver for upload to firebase
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null && intent.getAction() != null) {
+                    switch (intent.getAction()) {
+                        case UploadService.UPLOAD_COMPLETED:
+                            mDownloadUrl = intent.getParcelableExtra(UploadService.EXTRA_DOWNLOAD_URL);
+                            setProfilePhotoUrl(mDownloadUrl);
+                    }
+                }
+            }
+        };
+
         // Check intent
         Intent intent = getIntent();
         setFragment(intent.getIntExtra("menuId", R.id.nav_login));
     }
 
-    private void setProfilePhoto() {
+    private void setProfilePhotoUrl(Uri photoUrl) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(photoUrl)
+                .build();
+
+        if (user != null) {
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "User profile updated.");
+                            }
+                        }
+                    });
+        }
     }
 
     @Override
@@ -163,7 +198,7 @@ public class LSMainActivity extends AppCompatActivity
                 getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
+                ".jpg",  /* suffix */
                 storageDir      /* directory */
         );
         imageFilePath = image.getAbsolutePath();
@@ -173,21 +208,21 @@ public class LSMainActivity extends AppCompatActivity
     private void dispatchTakePhotoIntent() {
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
+            File photoFile;
             try {
                 photoFile = createImageFile();
+                photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", photoFile);
+                Log.d(TAG, "dispatchTakePhotoIntent: " + photoURI.toString());
+                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        photoURI);
+                startActivityForResult(takePhotoIntent,
+                        REQUEST_IMAGE_CAPTURE);
+
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.d(TAG, "dispatchTakePhotoIntent: " + ex.getMessage());
                 ex.printStackTrace();
             }
-
-            photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", photoFile);
-            Log.d(TAG, "dispatchTakePhotoIntent: " + photoURI.toString());
-            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    photoURI);
-            startActivityForResult(takePhotoIntent,
-                    REQUEST_IMAGE_CAPTURE);
         }
     }
 
@@ -210,6 +245,8 @@ public class LSMainActivity extends AppCompatActivity
 
 
     private void uploadFromUri() {
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.registerReceiver(mBroadcastReceiver, UploadService.getIntentFilter());
         Intent intent = new Intent(LSMainActivity.this, UploadService.class)
                 .putExtra(UploadService.EXTRA_FILE_URI, photoURI)
                 .setAction(UploadService.ACTION_UPLOAD)
@@ -231,7 +268,6 @@ public class LSMainActivity extends AppCompatActivity
             if (currentUser.getPhotoUrl() != null && !currentUser.getPhotoUrl().toString().isEmpty()) {
                 StorageReference profilePhotoReference = FirebaseStorage.getInstance().getReferenceFromUrl(currentUser.getPhotoUrl().toString());
 
-
                 File localFile = null;
                 try {
                     localFile = File.createTempFile("profilePhotos", "jpg");
@@ -240,18 +276,23 @@ public class LSMainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
-                profilePhotoReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap myBitmap = BitmapFactory.decodeFile(imageFilePath);
-                        profilePhoto.setImageBitmap(myBitmap);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
+                if (localFile != null) {
+                    profilePhotoReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Glide.with(getApplicationContext())
+                                    .load(imageFilePath)
+                                    .apply(RequestOptions.circleCropTransform())
+                                    .apply(new RequestOptions().override(192))
+                                    .into(profilePhoto);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Log.d(TAG, "onFailure: " + exception.toString());
+                        }
+                    });
+                }
             }
 
         }
@@ -292,7 +333,7 @@ public class LSMainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         setFragment(item.getItemId());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
