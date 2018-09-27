@@ -1,3 +1,6 @@
+/*
+  Adapted from source com.google.firebase.quickstart.firebasestorage
+ */
 package zhaw.ch.laundryschedule.service;
 
 import android.content.Intent;
@@ -18,6 +21,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Objects;
+
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 
@@ -35,20 +40,12 @@ public class UploadService extends BaseTaskService {
     public static final String EXTRA_FILE_URI = "extra_file_uri";
     public static final String EXTRA_DOWNLOAD_URL = "extra_download_url";
 
-    // [START declare_ref]
     private StorageReference mStorageRef;
-    // [END declare_ref]
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // [START get_storage_ref]
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        // [END get_storage_ref]
-        Log.d(TAG, "onCreate: "+mStorageRef.getBucket().toString());
-        Log.d(TAG, "onCreate: "+mStorageRef.getPath());
-        Log.d(TAG, "onCreate: "+mStorageRef.getName());
     }
 
     @Nullable
@@ -56,7 +53,6 @@ public class UploadService extends BaseTaskService {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
 
 
     @Override
@@ -69,7 +65,6 @@ public class UploadService extends BaseTaskService {
             uploadFromUri(fileUri);
 
         }
-
         return START_REDELIVER_INTENT;
     }
 
@@ -77,16 +72,12 @@ public class UploadService extends BaseTaskService {
     private void uploadFromUri(final Uri fileUri) {
         Log.d(TAG, "UPLOAD uploadFromUri:src:" + fileUri.toString());
 
-        // [START_EXCLUDE]
         taskStarted();
         showProgressNotification(getString(R.string.progress_uploading), 0, 0);
-        // [END_EXCLUDE]
 
-        // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
         final StorageReference photoRef = mStorageRef.child("profilePicture")
-                .child(fileUri.getLastPathSegment());
-        // [END get_child_ref]
+                .child(Objects.requireNonNull(fileUri.getLastPathSegment()));
 
         // Upload file to Firebase Storage
         Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
@@ -104,7 +95,7 @@ public class UploadService extends BaseTaskService {
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                         // Forward any exceptions
                         if (!task.isSuccessful()) {
-                            throw task.getException();
+                            throw Objects.requireNonNull(task.getException());
                         }
 
                         Log.d(TAG, "uploadFromUri: upload success");
@@ -119,11 +110,9 @@ public class UploadService extends BaseTaskService {
                         // Upload succeeded
                         Log.d(TAG, "uploadFromUri: getDownloadUri success");
 
-                        // [START_EXCLUDE]
                         broadcastUploadFinished(downloadUri, fileUri);
                         showUploadFinishedNotification(downloadUri, fileUri);
                         taskCompleted();
-                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -132,15 +121,13 @@ public class UploadService extends BaseTaskService {
                         // Upload failed
                         Log.w(TAG, "uploadFromUri:onFailure", exception);
 
-                        // [START_EXCLUDE]
                         broadcastUploadFinished(null, fileUri);
                         showUploadFinishedNotification(null, fileUri);
                         taskCompleted();
-                        // [END_EXCLUDE]
                     }
                 });
     }
-    // [END upload_from_uri]
+
 
     /**
      * Broadcast finished upload (success or failure).

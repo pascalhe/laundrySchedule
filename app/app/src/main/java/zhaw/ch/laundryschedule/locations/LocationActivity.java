@@ -33,18 +33,18 @@ public class LocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // get EditTexts
-        street = (EditText) findViewById(R.id.street);
-        streetNumber = (EditText) findViewById(R.id.streetNumber);
-        zipCode = (EditText) findViewById(R.id.zipCode);
-        city = (EditText) findViewById(R.id.city);
-        country = (EditText) findViewById(R.id.country);
+        street = findViewById(R.id.street);
+        streetNumber = findViewById(R.id.streetNumber);
+        zipCode = findViewById(R.id.zipCode);
+        city = findViewById(R.id.city);
+        country = findViewById(R.id.country);
 
         // Save or add location
-        saveLocationButton = (Button) findViewById(R.id.saveLocation);
+        saveLocationButton = findViewById(R.id.saveLocation);
         saveLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +56,7 @@ public class LocationActivity extends AppCompatActivity {
         Intent locationIntent = getIntent();
         if (locationIntent.hasExtra("documentKey")) {
             // Override button text from add to update
-            saveLocationButton.setText("Update Location");
+            saveLocationButton.setText(R.string.update_location);
 
             documentKey = locationIntent.getStringExtra("documentKey");
             DocumentReference docRef = Firestore.getInstance().collection("locations").document(documentKey);

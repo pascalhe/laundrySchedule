@@ -42,9 +42,6 @@
     <string name="title_activity_reservation">ReservationActivity</string>
     <string name="add_reservation">Add Reservation</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="dashboard">Dashboard</string>
     <string name="reservations">Reservations</string>
     <string name="login">Login</string>
     <string name="management">Management</string>
@@ -52,4 +49,14 @@
     <string name="washing_machines">Washing machines</string>
     <string name="users">Users</string>
     <string name="timer">Timer</string>
+    <string name="timerTitle">TIMER.</string>
+    <string name="timer00">00:00</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="timer_finished">Your machine is done</string>
+    <string name="timer_finished_text">Get your clean clothes</string>
+    <string name="update_user">Update User</string>
+    <string name="user_success">User successfully saved</string>
+    <string name="update_location">Update Location</string>
 </resources>

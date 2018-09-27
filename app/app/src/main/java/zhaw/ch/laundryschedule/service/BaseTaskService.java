@@ -1,3 +1,5 @@
+/* Adapted from source com.google.firebase.quickstart.firebasestorage */
+
 package zhaw.ch.laundryschedule.service;
 
 import android.app.NotificationChannel;
@@ -6,7 +8,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -43,12 +44,12 @@ public abstract class BaseTaskService extends Service {
 
     private void createDefaultChannel() {
         // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID_DEFAULT,
-                    "Default",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID_DEFAULT,
+                "Default",
+                NotificationManager.IMPORTANCE_DEFAULT);
+        if (nm != null) {
             nm.createNotificationChannel(channel);
         }
     }
@@ -74,7 +75,9 @@ public abstract class BaseTaskService extends Service {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify(PROGRESS_NOTIFICATION_ID, builder.build());
+        if (manager != null) {
+            manager.notify(PROGRESS_NOTIFICATION_ID, builder.build());
+        }
     }
 
     /**
@@ -98,7 +101,9 @@ public abstract class BaseTaskService extends Service {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify(FINISHED_NOTIFICATION_ID, builder.build());
+        if (manager != null) {
+            manager.notify(FINISHED_NOTIFICATION_ID, builder.build());
+        }
     }
 
     /**
@@ -108,6 +113,8 @@ public abstract class BaseTaskService extends Service {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.cancel(PROGRESS_NOTIFICATION_ID);
+        if (manager != null) {
+            manager.cancel(PROGRESS_NOTIFICATION_ID);
+        }
     }
 }

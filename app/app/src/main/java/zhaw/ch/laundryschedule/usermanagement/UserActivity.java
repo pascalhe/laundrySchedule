@@ -12,26 +12,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import zhaw.ch.laundryschedule.LSMainActivity;
 import zhaw.ch.laundryschedule.R;
 import zhaw.ch.laundryschedule.database.Firestore;
 import zhaw.ch.laundryschedule.locations.LocationSpinner;
-import zhaw.ch.laundryschedule.locations.SpinLocationAdapter;
-import zhaw.ch.laundryschedule.models.Location;
 import zhaw.ch.laundryschedule.models.User;
 import zhaw.ch.laundryschedule.util.ProgressView;
 
@@ -47,16 +41,12 @@ public class UserActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText userNameEditText;
     private EditText passwordEditText;
-    private Location userLocation = null;
-    private List<Location> locationList = new ArrayList<Location>();
-    private SpinLocationAdapter spinLocationAdapter;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         progressView = findViewById(R.id.user_progress);
@@ -78,13 +68,11 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
-
         // Check intent
         Intent userIntent = getIntent();
         if (userIntent.hasExtra("documentKey")) {
             // Override button text from add to update
-            saveUserButton.setText("Update User");
+            saveUserButton.setText(R.string.update_user);
 
             documentKey = userIntent.getStringExtra("documentKey");
             DocumentReference docRef = Firestore.getInstance().collection("users").document(documentKey);
@@ -138,20 +126,20 @@ public class UserActivity extends AppCompatActivity {
         }
 
         if (cancel) {
-            // There was an error; don't attempt create and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user create user attempt.
             showProgress(true);
-            // create or update user
             writeUserToDb(user);
         }
     }
 
-    private void writeUserToDb(User user) {
 
+    /**
+     * Writes the User Object to the Firebase database
+     *
+     * @param user User
+     */
+    private void writeUserToDb(User user) {
         if (documentKey == null || documentKey.isEmpty())
             documentKey = UUID.randomUUID().toString().replace("-", "");
 
@@ -161,24 +149,36 @@ public class UserActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             showProgress(false);
+                            Snackbar.make(formView, R.string.user_success, Snackbar.LENGTH_SHORT)
+                                    .setAction("Action", null).show();
                             startIntent();
                         } else {
                             showProgress(false);
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "writeUserToDb:failure", task.getException());
-                            Snackbar.make(getCurrentFocus(), "Failed: " + task.getException().getMessage(), Snackbar.LENGTH_LONG)
+                            Snackbar.make(formView, "Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         }
                     }
                 });
     }
 
+
+    /**
+     * Starts Intent of LSMain Activity
+     */
     private void startIntent(){
         Intent lSMainActivityIntent = new Intent(getBaseContext(), LSMainActivity.class);
         lSMainActivityIntent.putExtra("menuId",R.id.nav_usermanagement);
         startActivity(lSMainActivityIntent);
     }
 
+
+    /**
+     * Shows a ProgressView
+     *
+     * @param show Boolean
+     */
     private void showProgress(Boolean show) {
         ProgressView.show(show, formView, progressView, getBaseContext());
     }
