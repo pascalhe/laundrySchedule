@@ -37,4 +37,25 @@
         android:text="@string/reset"
         android:visibility="invisible"
         tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/input_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:ems="10"
+        android:hint="@string/minutes"
+        android:inputType="number"
+        android:maxLength="4"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/button_set_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/input_timer"
+        android:text="@string/set"
+        android:visibility="gone" />
 </RelativeLayout>

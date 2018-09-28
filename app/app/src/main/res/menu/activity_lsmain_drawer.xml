@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_main"
+        android:checkableBehavior="single"
+        android:visible="true">
         <item
             android:id="@+id/nav_reservation"
             android:icon="@drawable/ic_menu_reservation"
@@ -12,27 +15,36 @@
             android:id="@+id/nav_timer"
             android:icon="@drawable/ic_timer_black_24dp"
             android:title="@string/timer" />
-        <item
-            android:id="@+id/nav_login"
-            android:icon="@drawable/ic_menu_login"
-            android:title="@string/login" />
+    </group>
+    <item
+        android:id="@+id/nav_login"
+        android:icon="@drawable/ic_menu_login"
+        android:title="@string/login"
+        android:visible="false" />
+
+
+    <group
+        android:id="@+id/menu_management"
+        android:visible="true">
+        <item android:title="@string/management">
+            <menu>
+
+                <item
+                    android:id="@+id/nav_usermanagement"
+                    android:icon="@drawable/ic_menu_account"
+                    android:title="@string/users" />
+                <item
+                    android:id="@+id/nav_washing_machines"
+                    android:icon="@drawable/ic_menu_washing_machine"
+                    android:title="@string/washing_machines" />
+                <item
+                    android:id="@+id/nav_locations"
+                    android:icon="@drawable/ic_menu_location"
+                    android:title="@string/locations" />
+
+            </menu>
+        </item>
     </group>
 
-    <item android:title="@string/management">
-        <menu>
-            <item
-                android:id="@+id/nav_usermanagement"
-                android:icon="@drawable/ic_menu_account"
-                android:title="@string/users" />
-            <item
-                android:id="@+id/nav_washing_machines"
-                android:icon="@drawable/ic_menu_washing_machine"
-                android:title="@string/washing_machines" />
-            <item
-                android:id="@+id/nav_locations"
-                android:icon="@drawable/ic_menu_location"
-                android:title="@string/locations" />
-        </menu>
-    </item>
 
 </menu>

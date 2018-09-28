@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +31,15 @@ import zhaw.ch.laundryschedule.util.PreferenceUtil;
  */
 public class Timer extends Fragment {
     private static final String TAG = "Timer";
-    private static final long START_TIME_IN_MS = 12000;
+
     private static final int COUNT_DOWN_INTERVAL = 1000;
+    private long startTimeInMs = 0;
 
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
     private Button mButtonReset;
+    private EditText mInputTimer;
+    private Button mButtonSetTimer;
 
     private PreferenceUtil mPreferences;
     private Context context;
@@ -43,7 +48,7 @@ public class Timer extends Fragment {
     private CountDownTimer myCountDownTimer;
     private boolean mTimerRunning;
 
-    private long mTimeLeftInMs = START_TIME_IN_MS;
+    private long mTimeLeftInMs = startTimeInMs;
 
 
     public Timer() {
@@ -65,8 +70,8 @@ public class Timer extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -79,6 +84,8 @@ public class Timer extends Fragment {
         mTextViewCountDown = rootV.findViewById(R.id.text_view_countdown);
         mButtonStartPause = rootV.findViewById(R.id.button_start_pause);
         mButtonReset = rootV.findViewById(R.id.button_reset);
+        mInputTimer = rootV.findViewById(R.id.input_timer);
+        mButtonSetTimer = rootV.findViewById(R.id.button_set_timer);
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,16 +107,67 @@ public class Timer extends Fragment {
             }
         });
 
-        updateCounDownText();
+        mButtonSetTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTimer();
+            }
+        });
+
+        mInputTimer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                    setTimer();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mTextViewCountDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!mTimerRunning) {
+                    mTextViewCountDown.setVisibility(View.INVISIBLE);
+                    mButtonStartPause.setVisibility(View.INVISIBLE);
+                    mButtonReset.setVisibility(View.INVISIBLE);
+                    mInputTimer.setVisibility(View.VISIBLE);
+                    mButtonSetTimer.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        updateCountDownText();
 
         return rootV;
+    }
+
+    private void setTimer() {
+        String inputTime = mInputTimer.getText().toString();
+        if (inputTime.isEmpty()) {
+            mInputTimer.setError(getString(R.string.request_minutes));
+            mInputTimer.requestFocus();
+            return;
+        }
+        Long milliseconds = Long.parseLong(inputTime) * 60000;
+        if (milliseconds <= 0) {
+            mInputTimer.setError(getString(R.string.positive_number));
+            mInputTimer.requestFocus();
+            return;
+        }
+        mInputTimer.setVisibility(View.INVISIBLE);
+        mButtonSetTimer.setVisibility(View.INVISIBLE);
+        mTextViewCountDown.setVisibility(View.VISIBLE);
+        mButtonStartPause.setVisibility(View.VISIBLE);
+        startTimeInMs = milliseconds;
+        resetTimer();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         initTimer();
-        //       removeAlarm();
     }
 
     @Override
@@ -117,25 +175,15 @@ public class Timer extends Fragment {
         super.onPause();
         if (mTimerRunning) {
             myCountDownTimer.cancel();
-            setAlarm();
         }
     }
-
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (mTimerRunning) {
-//            myCountDownTimer.cancel();
-//            setAlarm();
-//        }
-//    }
 
     private void initTimer() {
         long startTime = mPreferences.getStartedTime();
         if (startTime > 0) {
-            mTimeLeftInMs = (START_TIME_IN_MS - (System.currentTimeMillis() - startTime));
+            mTimeLeftInMs = (startTimeInMs - (System.currentTimeMillis() - startTime));
             if (mTimeLeftInMs <= 0) { // TIMER EXPIRED
-                mTimeLeftInMs = START_TIME_IN_MS;
+                mTimeLeftInMs = startTimeInMs;
                 mTimerRunning = false;
                 onTimerFinish();
             } else {
@@ -143,10 +191,10 @@ public class Timer extends Fragment {
                 mTimerRunning = true;
             }
         } else {
-            mTimeLeftInMs = START_TIME_IN_MS;
+            mTimeLeftInMs = startTimeInMs;
             mTimerRunning = false;
         }
-        updateCounDownText();
+        updateCountDownText();
         updateButtons();
     }
 
@@ -157,7 +205,7 @@ public class Timer extends Fragment {
             @Override
             public void onTick(long msUntilFinished) {
                 mTimeLeftInMs = msUntilFinished;
-                updateCounDownText();
+                updateCountDownText();
             }
 
             @Override
@@ -174,7 +222,7 @@ public class Timer extends Fragment {
         Toast.makeText(context, R.string.timer_finished, Toast.LENGTH_SHORT).show();
         mPreferences.setStartedTime(0);
         mTimerRunning = false;
-        updateCounDownText();
+        updateCountDownText();
         updateButtons();
     }
 
@@ -183,38 +231,29 @@ public class Timer extends Fragment {
         myCountDownTimer.cancel();
         mTimerRunning = false;
         updateButtons();
+        removeAlarm();
     }
 
     private void resetTimer() {
-        mTimeLeftInMs = START_TIME_IN_MS;
-        updateCounDownText();
+        mTimeLeftInMs = startTimeInMs;
+        updateCountDownText();
         updateButtons();
+        removeAlarm();
     }
 
     public void setAlarm() {
-        long wakeUpTime = (mPreferences.getStartedTime() + START_TIME_IN_MS);
+        long wakeUpTime = (mPreferences.getStartedTime() + startTimeInMs);
 
-        //       alarmMgr = context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-// Set the alarm to start at approximately 4:00 p.m.
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.HOUR_OF_DAY, 16);
-//        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                1000*60*60*24, alarmIntent);
-
-        Log.d(TAG, "setAlarm: " + wakeUpTime);
-        AlarmManager am = (AlarmManager) rootV.getContext().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, TimerExpiredReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(wakeUpTime, sender);
+        AlarmManager am = (AlarmManager) rootV.getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this.context, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(this.context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         if (am != null) {
-            am.setAlarmClock(alarmClockInfo, sender);
+            am.set(AlarmManager.RTC_WAKEUP, wakeUpTime, sender);
         }
-        // am.set(AlarmManager.RTC_WAKEUP, wakeUpTime, sender);
     }
 
     public void removeAlarm() {
-        Intent intent = new Intent(Objects.requireNonNull(getActivity()).getBaseContext(), TimerExpiredReceiver.class);
+        Intent intent = new Intent(Objects.requireNonNull(getActivity()).getBaseContext(), AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(getActivity().getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) getActivity().getBaseContext().getSystemService(Context.ALARM_SERVICE);
         if (am != null) {
@@ -222,18 +261,13 @@ public class Timer extends Fragment {
         }
     }
 
-    //    Intent i = new Intent(this, MainActivity.class);
-//    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
-//    Notification.Builder builder = new Notification.Builder(this) .setSmallIcon(R.drawable.abc_ic_go_search_api_mtrl_alpha) .setContentTitle("Our notification") .setContentIntent(pendingIntent);
-//    //show the notification by calling NotificationManager.notify
-//    NotificationManager m = (NotificationManager) getSystemService(Context.NOTIFICA TION_SERVICE);
-//m.notify("test", 0, builder.build());
-    private void updateCounDownText() {
+    private void updateCountDownText() {
+        int hours = (int) (mTimeLeftInMs / 1000 / 3600);
         int minutes = (int) (mTimeLeftInMs / 1000 / 60);
         int seconds = (int) (mTimeLeftInMs / 1000 % 60);
 
-        String timeLeftFormated = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-        mTextViewCountDown.setText(timeLeftFormated);
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+        mTextViewCountDown.setText(timeLeftFormatted);
     }
 
     private void updateButtons() {
@@ -248,7 +282,7 @@ public class Timer extends Fragment {
                 mButtonStartPause.setVisibility(View.VISIBLE);
             }
 
-            if (mTimeLeftInMs < START_TIME_IN_MS) {
+            if (mTimeLeftInMs < startTimeInMs) {
                 mButtonReset.setVisibility(View.VISIBLE);
             } else {
                 mButtonReset.setVisibility(View.INVISIBLE);

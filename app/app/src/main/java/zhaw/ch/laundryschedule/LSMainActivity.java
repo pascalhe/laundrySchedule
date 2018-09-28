@@ -45,7 +45,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -75,18 +74,16 @@ public class LSMainActivity extends AppCompatActivity
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentTransaction fragmentTransaction;
-    private FirebaseAuth mAuth;
     private ImageView profilePhoto;
     private TextView userName;
     private TextView userEmail;
     private FloatingActionButton fab;
+    private NavigationView navigationView;
 
     private BroadcastReceiver mBroadcastReceiver;
     private String imageFilePath;
     private Uri photoURI;
-    private URI mFileUri = null;
     private Uri mDownloadUrl;
-    private File photoFile;
 
 
     @Override
@@ -96,9 +93,11 @@ public class LSMainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mAuth = FirebaseAuth.getInstance();
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         userEmail = headerView.findViewById(R.id.user_email);
         userName = headerView.findViewById(R.id.user_name);
         profilePhoto = headerView.findViewById(R.id.profile_photo);
@@ -114,7 +113,6 @@ public class LSMainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(this);
 
         // BroadcastReceiver for upload to firebase
         mBroadcastReceiver = new BroadcastReceiver() {
@@ -132,7 +130,7 @@ public class LSMainActivity extends AppCompatActivity
 
         // Check intent
         Intent intent = getIntent();
-        setFragment(intent.getIntExtra("menuId", R.id.nav_login));
+        setFragment(intent.getIntExtra("menuId", R.id.nav_timer));
     }
 
     private void setProfilePhotoUrl(Uri photoUrl) {
@@ -159,9 +157,8 @@ public class LSMainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-
             DocumentReference docRef = Firestore.getInstance().collection("users").document(currentUser.getUid());
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -176,7 +173,7 @@ public class LSMainActivity extends AppCompatActivity
                 }
             });
 
-            updateUI(currentUser);
+
             profilePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -184,8 +181,9 @@ public class LSMainActivity extends AppCompatActivity
                     dispatchTakePhotoIntent();
                 }
             });
+            updateUI(currentUser);
         } else {
-            setFragment(R.id.nav_login);
+            updateUI(null);
         }
     }
 
@@ -286,6 +284,7 @@ public class LSMainActivity extends AppCompatActivity
                                     .apply(new RequestOptions().override(192))
                                     .into(profilePhoto);
                         }
+
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
@@ -294,7 +293,17 @@ public class LSMainActivity extends AppCompatActivity
                     });
                 }
             }
-
+            navigationView.getMenu().setGroupVisible(R.id.menu_main, true);
+            navigationView.getMenu().setGroupVisible(R.id.menu_management, true);
+        } else {
+            Log.d(TAG, "updateUI: user null");
+            userEmail.setText("");
+            userName.setText("");
+            profilePhoto.setImageDrawable(getDrawable(R.drawable.ic_laundry_machine_app_icon2));
+            CurrentUser.createInstance(null);
+            setFragment(R.id.nav_login);
+            navigationView.getMenu().setGroupVisible(R.id.menu_main, false);
+            navigationView.getMenu().setGroupVisible(R.id.menu_management, false);
         }
 
     }
@@ -316,6 +325,20 @@ public class LSMainActivity extends AppCompatActivity
         return true;
     }
 
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            menu.setGroupVisible(R.id.action_logged_out, false);
+            menu.setGroupVisible(R.id.action_logged_in, true);
+        } else {
+            menu.setGroupVisible(R.id.action_logged_out, true);
+            menu.setGroupVisible(R.id.action_logged_in, false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -324,12 +347,16 @@ public class LSMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_log_out:
+                FirebaseAuth.getInstance().signOut();
+                updateUI(null);
+            case R.id.action_log_in:
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

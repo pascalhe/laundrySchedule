@@ -59,4 +59,8 @@
     <string name="update_user">Update User</string>
     <string name="user_success">User successfully saved</string>
     <string name="update_location">Update Location</string>
+    <string name="set">Set</string>
+    <string name="minutes">Minutes</string>
+    <string name="positive_number">Please enter a positive number</string>
+    <string name="request_minutes">Please input minutes</string>
 </resources>

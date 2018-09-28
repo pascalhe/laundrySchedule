@@ -48,7 +48,7 @@
         <service
             android:name=".service.UploadService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -60,6 +60,7 @@
                 android:resource="@xml/file_paths">
             </meta-data>
         </provider>
+        <receiver android:name=".timer.AlarmReceiver" />
     </application>
 
 </manifest>
