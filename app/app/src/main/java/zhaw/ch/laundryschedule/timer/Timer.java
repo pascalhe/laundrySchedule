@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class Timer extends Fragment {
     private static final String TAG = "Timer";
 
     private static final int COUNT_DOWN_INTERVAL = 1000;
-    private long startTimeInMs = 0;
+    private long startTimeInMs;
 
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
@@ -161,6 +162,7 @@ public class Timer extends Fragment {
         mTextViewCountDown.setVisibility(View.VISIBLE);
         mButtonStartPause.setVisibility(View.VISIBLE);
         startTimeInMs = milliseconds;
+        mPreferences.setSetTime(startTimeInMs);
         resetTimer();
     }
 
@@ -180,8 +182,11 @@ public class Timer extends Fragment {
 
     private void initTimer() {
         long startTime = mPreferences.getStartedTime();
+        startTimeInMs = mPreferences.getSetTime();
         if (startTime > 0) {
+            Log.d(TAG, "initTimer: " + startTimeInMs);
             mTimeLeftInMs = (startTimeInMs - (System.currentTimeMillis() - startTime));
+            Log.d(TAG, "initTimer: " + mTimeLeftInMs);
             if (mTimeLeftInMs <= 0) { // TIMER EXPIRED
                 mTimeLeftInMs = startTimeInMs;
                 mTimerRunning = false;
